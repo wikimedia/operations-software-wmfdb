@@ -1,5 +1,6 @@
+__pycache__
 .coverage
-/*.egg-info
 /.tox/
 /.vscode/
+/*.egg-info
 /cover/
