@@ -17,9 +17,7 @@ def setup(level: Union[str, int] = logging.INFO) -> None:
         wmfdb.exceptions.WmfdbValueError: if level is not valid.
     """
     _check_level(level)
-    formatter = logging.Formatter(
-        fmt="%(asctime)s %(process)d [%(levelname)s] %(message)s"
-    )
+    formatter = logging.Formatter(fmt="%(asctime)s %(process)d [%(levelname)s] %(message)s")
     stderr_handler = logging.StreamHandler()
     stderr_handler.setFormatter(formatter)
     root_logger.addHandler(stderr_handler)

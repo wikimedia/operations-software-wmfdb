@@ -1,3 +1,4 @@
 [tool.black]
 target-version = ['py37']
 exclude = '''\.tox'''
+line-length = 100
