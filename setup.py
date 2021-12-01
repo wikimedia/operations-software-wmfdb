@@ -14,4 +14,10 @@ setup(
     packages=("wmfdb",),
     install_requires=["pymysql>=0.9.3"],
     test_suite="wmfdb.tests",
+    entry_points={
+        "console_scripts": [
+            # cli_admin
+            "db-mysql = wmfdb.cli_admin.db_mysql:main",
+        ]
+    },
 )
