@@ -10,11 +10,11 @@ root_logger = logging.getLogger()
 def setup(level: Union[str, int] = logging.INFO) -> None:
     """Set up logging.
 
-    Arguments:
-        level (str, int): Logging level to set.
+    Args:
+        level (Union[str, int], optional): Logging level to set.. Defaults to logging.INFO.
 
     Raises:
-        wmfdb.exceptions.WmfdbValueError: if level is not valid.
+        WmfdbValueError: (indirect) if level is not valid.
     """
     _check_level(level)
     formatter = logging.Formatter(fmt="%(asctime)s %(process)d [%(levelname)s] %(message)s")
@@ -27,11 +27,11 @@ def setup(level: Union[str, int] = logging.INFO) -> None:
 def _check_level(level: Union[str, int]) -> None:
     """Validate logging level.
 
-    Arguments:
-        level (str, int): Logging level to check.
+    Args:
+        level (Union[str, int]): Logging level to check.
 
     Raises:
-        wmfdb.exceptions.WmfdbValueError: if level is not valid.
+        WmfdbValueError: if level is not valid.
     """
     # getLevelName has weird semantics, but there doesn't seem to be any other supported
     # way to do this.
