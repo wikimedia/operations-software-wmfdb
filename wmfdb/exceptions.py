@@ -7,3 +7,7 @@ class WmfdbError(Exception):
 
 class WmfdbValueError(WmfdbError):
     """Generic wmfdb value error."""
+
+
+class WmfdbIOError(WmfdbError):
+    """Generic wmfdb IO error."""
