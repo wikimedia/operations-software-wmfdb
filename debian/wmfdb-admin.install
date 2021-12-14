@@ -1,0 +1,3 @@
+wmfdb/cli_admin/*.py usr/lib/python3/dist-packages/wmfdb/cli_admin
+wmfdb/mysql_cli.py usr/lib/python3/dist-packages/wmfdb
+usr/bin/db-mysql

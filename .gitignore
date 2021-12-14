@@ -1,6 +1,14 @@
 __pycache__
 .coverage
+/.pybuild/
 /.tox/
 /.vscode/
 /*.egg-info
 /cover/
+/debian/*.debhelper
+/debian/*.substvars
+/debian/debhelper-build-stamp
+/debian/files
+/debian/python3-wmfdb/
+/debian/tmp/
+/debian/wmfdb-admin/

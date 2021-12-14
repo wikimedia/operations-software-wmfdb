@@ -1,0 +1,6 @@
+wmfdb/__init__.py usr/lib/python3/dist-packages/wmfdb
+wmfdb/addr.py usr/lib/python3/dist-packages/wmfdb
+wmfdb/exceptions.py usr/lib/python3/dist-packages/wmfdb
+wmfdb/log.py usr/lib/python3/dist-packages/wmfdb
+wmfdb/section.py usr/lib/python3/dist-packages/wmfdb
+usr/lib/python3.*/dist-packages/wmfdb*.egg-info usr/lib/python3/dist-packages

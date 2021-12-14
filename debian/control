@@ -1,0 +1,24 @@
+Source: wmfdb
+Section: utils
+Priority: optional
+Maintainer: Stevie Beth Mhaol <sbmhaol@wikimedia.org>
+Build-Depends: debhelper (>= 10), dh-python, python3-all-dev, python3-setuptools
+Standards-Version: 4.1.2
+Homepage: https://gerrit.wikimedia.org/r/admin/repos/operations%2Fsoftware%2Fwmfdb
+X-Python3-Version: >= 3.7
+
+Package: python3-wmfdb
+Architecture: any
+Depends: ${python3:Depends}, ${misc:Depends}
+Description: Libraries for interacting with WMF's mariadb deployments
+ wmfdb is a set of Python 3 libraries for interacting with and
+ maintaining mariadb deployments.
+
+Package: wmfdb-admin
+Architecture: any
+Depends:
+ ${python3:Depends},
+ ${misc:Depends},
+ python3-wmfdb (= ${binary:Version}),
+Description: Utilities for maintaining WMF's mariadb deployments
+ This package contains the utilities suitable for admin hosts.
