@@ -61,9 +61,10 @@ def test_dc_map(host, expected):
     assert addr._dc_map(host) == expected
 
 
-def test_dc_map_no_dcid():
-    with pytest.raises(WmfdbValueError, match="No datacenter ID"):
-        addr._dc_map("host333")
+def test_dc_map_no_dcid(mocker):
+    m = mocker.patch("wmfdb.addr.socket.getfqdn")
+    assert addr._dc_map("host333") == m.return_value
+    m.assert_called_once_with("host333")
 
 
 def test_dc_map_bad_dcid():

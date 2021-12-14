@@ -37,6 +37,7 @@ def run() -> None:
 
     sm = section.SectionMap()
     host, port = addr.split(known.instance[0], sm)
+    host = addr.resolve(host)
     args = [CMD, "-h", host, "-P", str(port)]
     if not known.skip_ssl:
         args.extend(mysql_cli.ssl_args())

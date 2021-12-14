@@ -52,11 +52,12 @@ def _resolve_ip(ip: Union[ipaddress.IPv4Address, ipaddress.IPv6Address]) -> str:
 def _dc_map(host: str) -> str:
     """Map a bare hostname to a DC, and return the FQDN.
 
+    If the hostname does not contain a DC ID, resolve it via dns.
+
     Args:
         host (str): bare hostname.
 
     Raises:
-        WmfdbValueError: if no DC id is found in host.
         WmfdbValueError: if DC id is not known.
 
     Returns:
@@ -73,7 +74,7 @@ def _dc_map(host: str) -> str:
     dc_rx = re.compile(r"^[a-zA-Z]+(?P<dc_id>\d)\d{3}$")
     m = dc_rx.match(host)
     if not m:
-        raise WmfdbValueError(f"No datacenter ID detected in {host}")
+        return socket.getfqdn(host)
     dc_id = int(m.group("dc_id"))
     if dc_id not in dcs:
         raise WmfdbValueError(f"Unknown datacenter ID '{dc_id}' (from '{host}')")
@@ -106,7 +107,7 @@ def split(addr: str, sm: SectionMap, def_port: int = 3306) -> Tuple[str, int]:
         WmfdbValueError: if port is not an integer.
 
     Returns:
-        Tuple[str, int]: [description]
+        Tuple[str, int]: address and port.
     """
     port = def_port
     port_str = ""
