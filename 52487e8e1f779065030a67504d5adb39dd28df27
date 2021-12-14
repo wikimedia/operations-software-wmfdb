@@ -41,6 +41,30 @@
       "serverId": "e9e9afe9-4712-486d-8885-f54b72dd1951"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "d067f516_48f5040a",
+        "filename": "wmfdb/exceptions.py",
+        "patchSetId": 5
+      },
+      "lineNbr": 13,
+      "author": {
+        "id": 8161
+      },
+      "writtenOn": "2021-12-14T11:36:50Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "f99d7b42_59bac941",
+      "range": {
+        "startLine": 13,
+        "startChar": 24,
+        "endLine": 13,
+        "endChar": 30
+      },
+      "revId": "52487e8e1f779065030a67504d5adb39dd28df27",
+      "serverId": "e9e9afe9-4712-486d-8885-f54b72dd1951"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "017d5d12_65c0a73d",
@@ -54,6 +78,30 @@
       "writtenOn": "2021-12-14T10:44:21Z",
       "side": 1,
       "message": "[nit, optional] if you want avoid the backslash you could use lstrip() before splitlines()",
+      "range": {
+        "startLine": 13,
+        "startChar": 15,
+        "endLine": 13,
+        "endChar": 16
+      },
+      "revId": "52487e8e1f779065030a67504d5adb39dd28df27",
+      "serverId": "e9e9afe9-4712-486d-8885-f54b72dd1951"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "e8f071f5_0d3bb9e1",
+        "filename": "wmfdb/section.py",
+        "patchSetId": 5
+      },
+      "lineNbr": 13,
+      "author": {
+        "id": 8161
+      },
+      "writtenOn": "2021-12-14T11:36:50Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "017d5d12_65c0a73d",
       "range": {
         "startLine": 13,
         "startChar": 15,
@@ -81,6 +129,24 @@
       "serverId": "e9e9afe9-4712-486d-8885-f54b72dd1951"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "85bf2a95_2839807b",
+        "filename": "wmfdb/section.py",
+        "patchSetId": 5
+      },
+      "lineNbr": 155,
+      "author": {
+        "id": 8161
+      },
+      "writtenOn": "2021-12-14T11:36:50Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "8c6d1268_a779acdc",
+      "revId": "52487e8e1f779065030a67504d5adb39dd28df27",
+      "serverId": "e9e9afe9-4712-486d-8885-f54b72dd1951"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "a25f6796_2da79176",
@@ -98,6 +164,24 @@
       "serverId": "e9e9afe9-4712-486d-8885-f54b72dd1951"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "279c76b2_d17b5abc",
+        "filename": "wmfdb/section.py",
+        "patchSetId": 5
+      },
+      "lineNbr": 168,
+      "author": {
+        "id": 8161
+      },
+      "writtenOn": "2021-12-14T11:36:50Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "a25f6796_2da79176",
+      "revId": "52487e8e1f779065030a67504d5adb39dd28df27",
+      "serverId": "e9e9afe9-4712-486d-8885-f54b72dd1951"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "2cc8db99_dfcb381c",
@@ -111,6 +195,24 @@
       "writtenOn": "2021-12-14T10:44:21Z",
       "side": 1,
       "message": "[optional] if you want to fully test the file loading part too, instead of mocking open you could add some test config file to load here.",
+      "revId": "52487e8e1f779065030a67504d5adb39dd28df27",
+      "serverId": "e9e9afe9-4712-486d-8885-f54b72dd1951"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "fe7af60a_037a32c6",
+        "filename": "wmfdb/tests/unit/test_section.py",
+        "patchSetId": 5
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8161
+      },
+      "writtenOn": "2021-12-14T11:36:50Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "2cc8db99_dfcb381c",
       "revId": "52487e8e1f779065030a67504d5adb39dd28df27",
       "serverId": "e9e9afe9-4712-486d-8885-f54b72dd1951"
     }
