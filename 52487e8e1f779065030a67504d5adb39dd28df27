@@ -1,0 +1,118 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "66a2b51a_7bfe5e7e",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 5
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 3215
+      },
+      "writtenOn": "2021-12-14T10:44:21Z",
+      "side": 1,
+      "message": "As requested I did a quick pass. All seems sane. Left few very minor and optional comments.\n\nThe only small concern I had is regarding the SectionMap class that seems to handle both loading the configuration and parsing it. But given the intention to minimize code duplication in clients of this library repositories for testing makes sense.",
+      "revId": "52487e8e1f779065030a67504d5adb39dd28df27",
+      "serverId": "e9e9afe9-4712-486d-8885-f54b72dd1951"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f99d7b42_59bac941",
+        "filename": "wmfdb/exceptions.py",
+        "patchSetId": 5
+      },
+      "lineNbr": 13,
+      "author": {
+        "id": 3215
+      },
+      "writtenOn": "2021-12-14T10:44:21Z",
+      "side": 1,
+      "message": "typo: error",
+      "range": {
+        "startLine": 13,
+        "startChar": 24,
+        "endLine": 13,
+        "endChar": 30
+      },
+      "revId": "52487e8e1f779065030a67504d5adb39dd28df27",
+      "serverId": "e9e9afe9-4712-486d-8885-f54b72dd1951"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "017d5d12_65c0a73d",
+        "filename": "wmfdb/section.py",
+        "patchSetId": 5
+      },
+      "lineNbr": 13,
+      "author": {
+        "id": 3215
+      },
+      "writtenOn": "2021-12-14T10:44:21Z",
+      "side": 1,
+      "message": "[nit, optional] if you want avoid the backslash you could use lstrip() before splitlines()",
+      "range": {
+        "startLine": 13,
+        "startChar": 15,
+        "endLine": 13,
+        "endChar": 16
+      },
+      "revId": "52487e8e1f779065030a67504d5adb39dd28df27",
+      "serverId": "e9e9afe9-4712-486d-8885-f54b72dd1951"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8c6d1268_a779acdc",
+        "filename": "wmfdb/section.py",
+        "patchSetId": 5
+      },
+      "lineNbr": 155,
+      "author": {
+        "id": 3215
+      },
+      "writtenOn": "2021-12-14T10:44:21Z",
+      "side": 1,
+      "message": "[nit, optional] if you want to force the clients to always specify name\u003dfoo, port\u003d123 (as you do above) you can do it with:\n\n  self, *, name:....",
+      "revId": "52487e8e1f779065030a67504d5adb39dd28df27",
+      "serverId": "e9e9afe9-4712-486d-8885-f54b72dd1951"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a25f6796_2da79176",
+        "filename": "wmfdb/section.py",
+        "patchSetId": 5
+      },
+      "lineNbr": 168,
+      "author": {
+        "id": 3215
+      },
+      "writtenOn": "2021-12-14T10:44:21Z",
+      "side": 1,
+      "message": "[nit, optional] you could simplify it with: if not name.strip()",
+      "revId": "52487e8e1f779065030a67504d5adb39dd28df27",
+      "serverId": "e9e9afe9-4712-486d-8885-f54b72dd1951"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2cc8db99_dfcb381c",
+        "filename": "wmfdb/tests/unit/test_section.py",
+        "patchSetId": 5
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 3215
+      },
+      "writtenOn": "2021-12-14T10:44:21Z",
+      "side": 1,
+      "message": "[optional] if you want to fully test the file loading part too, instead of mocking open you could add some test config file to load here.",
+      "revId": "52487e8e1f779065030a67504d5adb39dd28df27",
+      "serverId": "e9e9afe9-4712-486d-8885-f54b72dd1951"
+    }
+  ]
+}
