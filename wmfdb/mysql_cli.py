@@ -2,6 +2,9 @@
 import argparse
 from typing import List, Optional
 
+CMD = "mysql"
+DEF_CA = "/etc/ssl/certs/Puppet_Internal_CA.pem"
+
 
 class _HelpFormatter(
     argparse.RawDescriptionHelpFormatter,
@@ -31,8 +34,22 @@ def build_parser(
     return parser
 
 
+def build_args(host: str, port: int, skip_ssl: bool, rest: List[str]) -> List[str]:
+    args = [CMD]
+    if host.startswith("clouddb"):
+        # This has to appear before any other options.
+        args.append("--defaults-group-suffix=labsdb")
+    args.append(f"-h{host}")
+    if port != 3306:
+        args.append(f"-P{port}")
+    if not skip_ssl:
+        args.extend(ssl_args())
+    args.extend(rest)
+    return args
+
+
 def ssl_args(
-    ssl_ca: Optional[str] = "/etc/ssl/certs/Puppet_Internal_CA.pem",
+    ssl_ca: Optional[str] = DEF_CA,
 ) -> List[str]:
     """Add desired args to mysql commandline."""
     args = []

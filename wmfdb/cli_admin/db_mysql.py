@@ -7,8 +7,6 @@ import sys
 from wmfdb import addr, log, mysql_cli, section
 from wmfdb.exceptions import WmfdbError, WmfdbValueError
 
-CMD = "mysql"
-
 
 def main() -> None:
     try:
@@ -40,15 +38,10 @@ def run() -> None:
     sm = section.SectionMap()
     host, port = addr.split(known.instance[0], sm)
     host = addr.resolve(host)
-    args = [CMD, "-h", host, "-P", str(port)]
-    if host.startswith("clouddb"):
-        args.append("--defaults-group-suffix=labsdb")
-    if not known.skip_ssl:
-        args.extend(mysql_cli.ssl_args())
-    args.extend(rest)
 
+    args = mysql_cli.build_args(host, port, known.skip_ssl, rest)
     logging.info(f"Execing: {args}")
     try:
-        sys.exit(os.execvp(CMD, args))
+        sys.exit(os.execvp(mysql_cli.CMD, args))
     except FileNotFoundError as e:
-        logging.fatal(f"Unable to execute command '{CMD}': {e}")
+        logging.fatal(f"Unable to execute command '{mysql_cli.CMD}': {e}")
