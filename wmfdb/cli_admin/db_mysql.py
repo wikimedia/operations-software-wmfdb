@@ -4,6 +4,7 @@ import logging
 import os
 import sys
 
+import wmfdb
 from wmfdb import addr, log, mysql_cli, section
 from wmfdb.exceptions import WmfdbError, WmfdbValueError
 
@@ -27,6 +28,8 @@ def run() -> None:
         "appropriately.",
         epilog="Example usage:\n  db-mysql --log=debug db1115:s3 -e 'ghow global status'",
     )
+    # Note: This overrides the mysql client's --version flag.
+    parser.add_argument("--version", action="version", version=f"%(prog)s {wmfdb.__version__}")
     known, rest = parser.parse_known_args()
     try:
         log.setup(known.log.upper())
