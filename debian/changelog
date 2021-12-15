@@ -1,4 +1,10 @@
-wmfdb (0.1) UNRELEASED; urgency=medium
+wmfdb (0.1.1) buster-wikimedia; urgency=medium
+
+  * Support wikireplica instance authentication.
+
+ -- Stevie Beth Mhaol <sbmhaol@wikimedia.org>  Wed, 15 Dec 2021 15:12:47 +0100
+
+wmfdb (0.1) buster-wikimedia; urgency=medium
 
   * Initial version.
 
