@@ -24,7 +24,9 @@ def main() -> None:
 def run() -> None:
     parser = mysql_cli.build_parser(
         prog="db-mysql",
-        description="A wrapper around the mysql cmdline client",
+        description="A wrapper around the mysql cmdline client. It resolves the fqdn,\n"
+        "converts section port aliases (e.g. :s3), and configures ssl\n"
+        "appropriately.",
         epilog="Example usage:\n  db-mysql --log=debug db1115:s3 -e 'ghow global status'",
     )
     known, rest = parser.parse_known_args()
