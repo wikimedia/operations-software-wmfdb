@@ -18,6 +18,24 @@
       "serverId": "e9e9afe9-4712-486d-8885-f54b72dd1951"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "50492d32_33fbc1d4",
+        "filename": "wmfdb/mycnf.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 49,
+      "author": {
+        "id": 8161
+      },
+      "writtenOn": "2021-12-22T12:04:24Z",
+      "side": 1,
+      "message": "Good catch, done.",
+      "parentUuid": "603295b0_d2685948",
+      "revId": "a92b81696af261ca5aa9751f058ca0f8ff712c18",
+      "serverId": "e9e9afe9-4712-486d-8885-f54b72dd1951"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "6bc0b2d0_19220ca0",
@@ -31,6 +49,24 @@
       "writtenOn": "2021-12-22T11:46:40Z",
       "side": 1,
       "message": "[nit, optional] current best practices suggest to use pathlib whenever possible.",
+      "revId": "a92b81696af261ca5aa9751f058ca0f8ff712c18",
+      "serverId": "e9e9afe9-4712-486d-8885-f54b72dd1951"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "e163b964_c4788aa1",
+        "filename": "wmfdb/mycnf.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 122,
+      "author": {
+        "id": 8161
+      },
+      "writtenOn": "2021-12-22T12:04:24Z",
+      "side": 1,
+      "message": "Next CR switches everything to pathlib, as it is the bees knees.",
+      "parentUuid": "6bc0b2d0_19220ca0",
       "revId": "a92b81696af261ca5aa9751f058ca0f8ff712c18",
       "serverId": "e9e9afe9-4712-486d-8885-f54b72dd1951"
     },
@@ -54,6 +90,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "2837119c_b5fea645",
+        "filename": "wmfdb/mycnf.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 160,
+      "author": {
+        "id": 8161
+      },
+      "writtenOn": "2021-12-22T12:04:24Z",
+      "side": 1,
+      "message": "Oof. Let me test to see what mysql does in that sort of case...\n\nWelp, you\u0027re right. Will try to figure something out.",
+      "parentUuid": "6ce8d979_574a20f6",
+      "revId": "a92b81696af261ca5aa9751f058ca0f8ff712c18",
+      "serverId": "e9e9afe9-4712-486d-8885-f54b72dd1951"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "026c526b_4760b8b3",
         "filename": "wmfdb/mycnf.py",
         "patchSetId": 2
@@ -65,6 +119,24 @@
       "writtenOn": "2021-12-22T11:46:40Z",
       "side": 1,
       "message": "[optional] Correct me if I\u0027m wrong, but it seems to me that None is never a returned value. If that\u0027s the case you could just return None when the key is not found and drop the tuple from all the method signatures. Totally optional and maybe there will be valid cases for None.",
+      "revId": "a92b81696af261ca5aa9751f058ca0f8ff712c18",
+      "serverId": "e9e9afe9-4712-486d-8885-f54b72dd1951"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "a3a0a8fe_c36e2997",
+        "filename": "wmfdb/mycnf.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 163,
+      "author": {
+        "id": 8161
+      },
+      "writtenOn": "2021-12-22T12:04:24Z",
+      "side": 1,
+      "message": "By keeping the same return signature of `Tuple[\u003cvalue\u003e, bool]` for all of the getters, i can do things like _set_arg() in pymysql_conn_args(). Otherwise i need to have custom code for each type, and everything sucks.",
+      "parentUuid": "026c526b_4760b8b3",
       "revId": "a92b81696af261ca5aa9751f058ca0f8ff712c18",
       "serverId": "e9e9afe9-4712-486d-8885-f54b72dd1951"
     },
@@ -82,6 +154,24 @@
       "writtenOn": "2021-12-22T11:46:40Z",
       "side": 1,
       "message": "[optional] to be picky this method seems to not belong to this class, both from an SRP (Single Responsability Principle) point of view and for the fact that is specific to pymsql, while I guess the Cnf parser could be used also in different contextes.\nThat said I\u0027m not sure what to suggest, you could have a separate class that at that point handles also the pymysql connection, have a helper function that has the same functionality of this method or rename this method to pymysql_conn_args.",
+      "revId": "a92b81696af261ca5aa9751f058ca0f8ff712c18",
+      "serverId": "e9e9afe9-4712-486d-8885-f54b72dd1951"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "aef8b70f_f51d6708",
+        "filename": "wmfdb/mycnf.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 254,
+      "author": {
+        "id": 8161
+      },
+      "writtenOn": "2021-12-22T12:04:24Z",
+      "side": 1,
+      "message": "Ack. Gone with pymysql_conn_args for now. Open to changing that later.",
+      "parentUuid": "1ac04a36_94ac074a",
       "revId": "a92b81696af261ca5aa9751f058ca0f8ff712c18",
       "serverId": "e9e9afe9-4712-486d-8885-f54b72dd1951"
     }
