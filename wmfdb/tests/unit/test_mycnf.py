@@ -1,5 +1,4 @@
 from pathlib import Path
-from typing import Optional
 from unittest.mock import call
 
 import pytest
@@ -63,7 +62,7 @@ class TestCnf:
         c._load_cfg(cnf_path)
         assert c._parser.sections() == ["client", "clientextra"]
         assert c._parser.get("client", "user") == '"user1"'
-        assert c._parser.get("client", "ssl-ca") == "/path/to/CA.pem  # inline comment"
+        assert c._parser.get("client", "ssl-ca") == '"/path/to/#/CA.pem"  # inline comment'
         assert c._parser.get("client", "port") == "3999#inline comment"
         assert c._parser.get("clientextra", "user") == '"user1_extra"'
         # Normalization tests
@@ -128,19 +127,15 @@ class TestCnf:
         c = mycnf.Cnf()
         assert c._get("missing_key") == ("", "", False)
 
-    @pytest.mark.parametrize(
-        "val,expected",
-        [
-            (None, ""),
-            ("value0", "value0"),
-            ("value1#comment", "value1"),
-            ("value2  # comment", "value2"),
-            ("value3", "value3"),
-        ],
-    )
-    def test__cleanup_value(self, val: Optional[str], expected: str) -> None:
+    def test__cleanup_value_none(self) -> None:
         c = mycnf.Cnf()
-        assert c._cleanup_value(val) == expected
+        assert c._cleanup_value(None) == ""
+
+    def test__cleanup_value_comment(self, mocker: MockerFixture) -> None:
+        m = mocker.patch("wmfdb.mycnf.Cnf._cleanup_comment")
+        c = mycnf.Cnf()
+        assert c._cleanup_value("foo#bar") == m.return_value
+        m.assert_called_once_with("foo#bar")
 
     @pytest.mark.parametrize(
         "val,expected",
@@ -174,6 +169,28 @@ class TestCnf:
         expected = expected.strip("*")
         c = mycnf.Cnf()
         assert c._cleanup_value(val) == expected
+
+    @pytest.mark.parametrize(
+        "val,expected",
+        [
+            ("", ""),
+            ("'", "'"),
+            ('"', '"'),
+            ("foo", "foo"),
+            ("foo#cmt", "foo"),
+            ("foo #cmt", "foo"),
+            ("foo# cmt", "foo"),
+            ("foo#cmt1#cmt2", "foo"),
+            ("'foo # cmt", "'foo"),
+            ("\"foo # cmt'", '"foo'),
+            ("'foo # bar#'baz", "'foo # bar#'baz"),
+            ("'foo # bar#' # cmt", "'foo # bar#'"),
+            ("''foo # bar # cmt", "''foo"),
+        ],
+    )
+    def test__cleanup_comment(self, val: str, expected: str) -> None:
+        c = mycnf.Cnf()
+        assert c._cleanup_comment(val) == expected
 
     def test_get_str(self, mocker: MockerFixture) -> None:
         m = mocker.patch("wmfdb.mycnf.Cnf._get")
@@ -281,7 +298,7 @@ class TestCnf:
             "port": 3999,
             "connect_timeout": 0.3,
             "max_allowed_packet": "16M",
-            "ssl_ca": "/path/to/CA.pem",
+            "ssl_ca": "/path/to/#/CA.pem",
         }
 
     def test_pymysql_conn_args_multi_cnf(self) -> None:
@@ -297,7 +314,7 @@ class TestCnf:
             "port": 3999,
             "connect_timeout": 0.3,
             "max_allowed_packet": "32M",
-            "ssl_ca": "/path/to/CA.pem",
+            "ssl_ca": "/path/to/#/CA.pem",
             "ssl_verify_cert": True,
             "ssl_verify_identity": True,
         }
@@ -310,5 +327,5 @@ class TestCnf:
             "port": 3999,
             "connect_timeout": 0.3,
             "max_allowed_packet": "16M",
-            "ssl_ca": "/path/to/CA.pem",
+            "ssl_ca": "/path/to/#/CA.pem",
         }

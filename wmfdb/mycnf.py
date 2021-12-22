@@ -152,14 +152,56 @@ class Cnf:
             str: cleaned value.
         """
         if val is None:
-            val = ""
-        elif len(val) >= 2 and val[0] == val[-1] and val[0] in ('"', "'"):
+            return ""
+        if "#" in val:
+            val = self._cleanup_comment(val)
+        if len(val) >= 2 and val[0] == val[-1] and val[0] in ('"', "'"):
             # Check for "value" or 'value', and strip matching quotes.
             val = val[1:-1]
-        elif "#" in val:
-            # Handle in-line comments when value is not quoted.
-            val = val[: val.index("#")].rstrip()
         return val
+
+    def _cleanup_comment(self, val: str) -> str:
+        """Strip in-line comments from val.
+
+        Mysql/Mariadb have very complex rules for in-line comments, which aren't
+        documented, but can be seen in the code. E.g.:
+        https://github.com/MariaDB/server/blob/1b8f0d4b674dd7f9414778054ef714f0fed71ccc/mysys/my_default.c#L842-L865
+        Implementing full support for this requires a lot of complexity, including
+        supporting quotes that appear in the middle of values, and escaping comments.
+
+        Instead, this method implements a subset of the rules that should cover all
+        normal use-cases:
+        - If a value doesn't start with a quote char, or doesn't have a matching
+            closing quote char, strip everything after the first #. E.g.:
+            - `foo #bar#baz` -> `foo`
+            - `"foo#bar#baz` -> `"foo`
+            - `'foo#bar#baz"` -> `'foo`
+        - If a value starts with a quote char and has a matching closing quote char,
+            strip any comment after the (first) closing quote char. E.g.:
+            - `"foo#bar"` -> `"foo#bar"`
+            - `"foo#bar"baz#womble"` -> `"foo#bar"baz`
+        If a comment is removed, all whitespace is also removed from the end of
+        the value.
+
+        Args:
+            val (str): Value.
+
+        Returns:
+            str: Value with any in-line comment stripped.
+        """
+        if not val or "#" not in val:
+            return val
+        if val[0] not in ('"', "'") or val.count(val[0]) == 1:
+            # Value is not (properly) quoted, drop everything after the first #
+            return val[: val.index("#")].rstrip()
+        # Value is quoted, find the the next quote.
+        quote_close_idx = val.index(val[0], 1)
+        try:
+            cmt_idx = val.index("#", quote_close_idx)
+        except ValueError:
+            # No '#' after closing quote.
+            return val
+        return val[:cmt_idx].rstrip()
 
     def get_str(self, key: str) -> Tuple[str, bool]:
         """Get string value of key.

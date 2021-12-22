@@ -1,6 +1,6 @@
 [client]
 user = "user1"
-ssl-ca=/path/to/CA.pem  # inline comment
+ssl-ca="/path/to/#/CA.pem"  # inline comment
 port = 3999#inline comment
 max-allowed-packet = 16M
 connect_timeout = 0.3
