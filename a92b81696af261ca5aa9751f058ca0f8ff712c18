@@ -141,6 +141,24 @@
       "serverId": "e9e9afe9-4712-486d-8885-f54b72dd1951"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "7100d41b_01a73286",
+        "filename": "wmfdb/mycnf.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 163,
+      "author": {
+        "id": 3215
+      },
+      "writtenOn": "2021-12-22T13:19:42Z",
+      "side": 1,
+      "message": "I meant to return None as value in all getters when not found, so _set_arg could just check if return value is None. But anyway optional nit.",
+      "parentUuid": "a3a0a8fe_c36e2997",
+      "revId": "a92b81696af261ca5aa9751f058ca0f8ff712c18",
+      "serverId": "e9e9afe9-4712-486d-8885-f54b72dd1951"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "1ac04a36_94ac074a",

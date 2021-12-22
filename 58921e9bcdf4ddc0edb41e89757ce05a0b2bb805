@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "ec3ddf89_fcf93ccc",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 3215
+      },
+      "writtenOn": "2021-12-22T13:19:42Z",
+      "side": 1,
+      "message": "LGTM besides the issue with inline comments. Feel free to fix it in a separate patch.",
+      "revId": "58921e9bcdf4ddc0edb41e89757ce05a0b2bb805",
+      "serverId": "e9e9afe9-4712-486d-8885-f54b72dd1951"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "bb8d5f65_1a29b8a9",
+        "filename": "wmfdb/tests/fixtures/mycnf/1.cnf",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 3215
+      },
+      "writtenOn": "2021-12-22T13:19:42Z",
+      "side": 1,
+      "message": "[optional] maybe putting more explicit file names to these .cnf files might help read the tests",
+      "revId": "58921e9bcdf4ddc0edb41e89757ce05a0b2bb805",
+      "serverId": "e9e9afe9-4712-486d-8885-f54b72dd1951"
+    }
+  ]
+}
