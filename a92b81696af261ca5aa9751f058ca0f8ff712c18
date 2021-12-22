@@ -159,6 +159,24 @@
       "serverId": "e9e9afe9-4712-486d-8885-f54b72dd1951"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "219973ec_b4cc7f31",
+        "filename": "wmfdb/mycnf.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 163,
+      "author": {
+        "id": 8161
+      },
+      "writtenOn": "2021-12-22T14:51:10Z",
+      "side": 1,
+      "message": "Hmm. Ok, maybe that would actually work, now that _cleanup_value maps None to \"\". I\u0027ll play around with it after merging this.",
+      "parentUuid": "7100d41b_01a73286",
+      "revId": "a92b81696af261ca5aa9751f058ca0f8ff712c18",
+      "serverId": "e9e9afe9-4712-486d-8885-f54b72dd1951"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "1ac04a36_94ac074a",
