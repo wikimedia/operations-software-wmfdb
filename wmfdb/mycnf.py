@@ -2,14 +2,15 @@
 
 import configparser
 import os
+from pathlib import Path
 from typing import Any, Callable, Dict, Iterable, List, Optional, Tuple
 
 from wmfdb.exceptions import WmfdbIOError, WmfdbValueError
 
 DEF_CFG_LIST = (
-    "/etc/my.cnf",
-    "/etc/mysql/my.cnf",
-    "~/.my.cnf",
+    Path("/etc/my.cnf"),
+    Path("/etc/mysql/my.cnf"),
+    Path("~/.my.cnf"),
 )
 DEF_SECTION_LIST = ("client",)
 
@@ -74,53 +75,53 @@ class Cnf:
         """
         return key.replace("-", "_")
 
-    def load_cfgs(self, paths: Iterable[str] = DEF_CFG_LIST) -> None:
+    def load_cfgs(self, paths: Iterable[Path] = DEF_CFG_LIST) -> None:
         """Load my.cnf files in order.
 
         Any paths that don't exist or aren't readable are skipped.
 
         Args:
-            paths (Iterable[str], optional): Paths to load. Defaults to
+            paths (Iterable[Path], optional): Paths to load. Defaults to
                 DEF_CFG_LIST.
         """
         paths = self._find_cfgs(paths)
         for path in paths:
             self._load_cfg(path)
 
-    def _load_cfg(self, path: str) -> None:
+    def _load_cfg(self, path: Path) -> None:
         """Load a my.cnf file.
 
         Args:
-            path (str): File to load.
+            path (Path): File to load.
 
         Raises:
             WmfdbValueError: if parsing the file fails.
             WmfdbIOError: if unable to open the file.
         """
         try:
-            with open(path, "r", encoding="utf8") as f:
+            with path.open(encoding="utf8") as f:
                 try:
-                    self._parser.read_file(f, source=path)
+                    self._parser.read_file(f)
                 except configparser.Error as e:
                     raise WmfdbValueError(e) from None
         except (FileNotFoundError, PermissionError) as e:
             raise WmfdbIOError(e) from None
 
-    def _find_cfgs(self, paths: Iterable[str]) -> List[str]:
+    def _find_cfgs(self, paths: Iterable[Path]) -> List[Path]:
         """Filter out missing and unreadable files.
 
         ~ and ~user are expanded as part of this.
 
         Args:
-            paths (Iterable[str]): Files to look for.
+            paths (Iterable[Path]): Files to look for.
 
         Returns:
             List[str]: Readable paths in expanded form.
         """
-        ret: List[str] = []
+        ret: List[Path] = []
         for path in paths:
-            path = os.path.expanduser(path)
-            if os.path.isfile(path) and os.access(path, os.R_OK):
+            path = path.expanduser()
+            if path.is_file() and os.access(path, os.R_OK):
                 ret.append(path)
         return ret
 

@@ -46,8 +46,9 @@ class TestCnf:
         m_find_cfgs = mocker.patch("wmfdb.mycnf.Cnf._find_cfgs", return_value=["find1", "find2"])
         m_load_cfg = mocker.patch("wmfdb.mycnf.Cnf._load_cfg")
         c = mycnf.Cnf()
-        c.load_cfgs(["load1", "load2", "load3"])
-        m_find_cfgs.assert_called_once_with(["load1", "load2", "load3"])
+        paths = (Path("load1"), Path("load2"), Path("load3"))
+        c.load_cfgs(paths)
+        m_find_cfgs.assert_called_once_with(paths)
         m_load_cfg.assert_has_calls(
             [
                 call("find1"),
@@ -56,7 +57,7 @@ class TestCnf:
         )
 
     def test__load_cfg(self) -> None:
-        cnf_path = str(FIXTURES_BASE / "base.cnf")
+        cnf_path = FIXTURES_BASE / "base.cnf"
         c = mycnf.Cnf()
         assert not c._parser.sections()
         c._load_cfg(cnf_path)
@@ -72,13 +73,13 @@ class TestCnf:
         assert c._parser.get("client", "max-allowed_packet") == "16M"
 
     def test__load_cfg_parse_error(self) -> None:
-        cnf_path = str(FIXTURES_BASE / "parse_error.cnf")
+        cnf_path = FIXTURES_BASE / "parse_error.cnf"
         c = mycnf.Cnf()
         with pytest.raises(WmfdbValueError, match="no section headers"):
             c._load_cfg(cnf_path)
 
     def test__load_cfg_not_found(self, tmp_path: Path) -> None:
-        cnf_path = str(tmp_path / "my.cnf")
+        cnf_path = tmp_path / "my.cnf"
         c = mycnf.Cnf()
         with pytest.raises(WmfdbIOError, match="No such file"):
             c._load_cfg(cnf_path)
@@ -88,7 +89,7 @@ class TestCnf:
         cnf_path.touch(mode=0o000)
         c = mycnf.Cnf()
         with pytest.raises(WmfdbIOError, match="Permission denied"):
-            c._load_cfg(str(cnf_path))
+            c._load_cfg(cnf_path)
 
     def test__find_cfgs(self, tmp_path: Path) -> None:
         paths = [
@@ -106,7 +107,7 @@ class TestCnf:
         paths[2].touch()
         paths[3].touch(mode=0o000)
         c = mycnf.Cnf()
-        assert c._find_cfgs(map(str, paths)) == list(map(str, exp_paths))
+        assert c._find_cfgs(paths) == exp_paths
 
     def test__get(self, mocker: MockerFixture) -> None:
         m_cp = mocker.patch("wmfdb.mycnf.configparser.ConfigParser")
@@ -274,7 +275,7 @@ class TestCnf:
 
     def test_pymysql_conn_args_one_cnf(self) -> None:
         c = mycnf.Cnf()
-        c.load_cfgs([str(FIXTURES_BASE / "base.cnf")])
+        c.load_cfgs([FIXTURES_BASE / "base.cnf"])
         assert c.pymysql_conn_args() == {
             "user": "user1",
             "port": 3999,
@@ -287,8 +288,8 @@ class TestCnf:
         c = mycnf.Cnf()
         c.load_cfgs(
             [
-                str(FIXTURES_BASE / "base.cnf"),
-                str(FIXTURES_BASE / "add.cnf"),
+                FIXTURES_BASE / "base.cnf",
+                FIXTURES_BASE / "add.cnf",
             ]
         )
         assert c.pymysql_conn_args() == {
@@ -303,7 +304,7 @@ class TestCnf:
 
     def test_pymysql_conn_args_multi_section(self) -> None:
         c = mycnf.Cnf(section_order=["clientextra", "client"])
-        c.load_cfgs([str(FIXTURES_BASE / "base.cnf")])
+        c.load_cfgs([FIXTURES_BASE / "base.cnf"])
         assert c.pymysql_conn_args() == {
             "user": "user1_extra",
             "port": 3999,

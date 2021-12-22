@@ -50,7 +50,7 @@ class TestSectionMap:
         monkeypatch.delenv(section.TEST_DATA_ENV, raising=False)
         sm = section.SectionMap(_load_cfg=False)
         m = mocker.patch("builtins.open", mocker.mock_open())
-        sm._get_cfg_file("")
+        sm._get_cfg_file(None)
         m.assert_called_once_with(section.DEFAULT_CFG_PATH, mode="r", newline="")
 
     def test_get_cfg_file_on_disk(
@@ -65,7 +65,7 @@ class TestSectionMap:
         with open(cfg, "w+") as f:
             for line in section.TEST_DATA:
                 f.write(line)
-        assert sm._get_cfg_file(str(cfg)) == section.TEST_DATA
+        assert sm._get_cfg_file(cfg) == section.TEST_DATA
 
     def test_get_cfg_file_missing(
         self,
@@ -76,7 +76,7 @@ class TestSectionMap:
         monkeypatch.delenv(section.TEST_DATA_ENV, raising=False)
         sm = section.SectionMap(_load_cfg=False)
         with pytest.raises(WmfdbIOError, match="No such file"):
-            sm._get_cfg_file(str(tmp_path / "section_ports.csv"))
+            sm._get_cfg_file(tmp_path / "section_ports.csv")
 
     def test_get_cfg_file_eperm(
         self,
@@ -89,18 +89,18 @@ class TestSectionMap:
         cfg = tmp_path / "section_ports.csv"
         cfg.touch(mode=0o000)
         with pytest.raises(WmfdbIOError, match="Permission denied"):
-            sm._get_cfg_file(str(cfg))
+            sm._get_cfg_file(cfg)
 
     def test_get_cfg_file_test_data(self, mocker: MockerFixture) -> None:
         sm = section.SectionMap(_load_cfg=False)
         m = mocker.patch("builtins.open", mocker.mock_open())
-        lines = sm._get_cfg_file("")
+        lines = sm._get_cfg_file(None)
         m.assert_not_called()
         assert lines[0] == section.TEST_DATA[0]
 
     def test_parse_cfg(self) -> None:
         sm = section.SectionMap(_load_cfg=False)
-        cfg = sm._get_cfg_file("")
+        cfg = sm._get_cfg_file(None)
         sm._parse_cfg(cfg)
         self._check_cfg_loaded(sm)
 
@@ -198,7 +198,7 @@ class TestSection:
     )
     def test_socket_path(self, name: str, port: int, expected: str) -> None:
         s = section.Section(name=name, port=port)
-        assert s.socket_path() == expected
+        assert s.socket_path() == Path(expected)
 
     @pytest.mark.parametrize(
         "name,port,expected",
@@ -209,7 +209,7 @@ class TestSection:
     )
     def test_datadir(self, name: str, port: int, expected: str) -> None:
         s = section.Section(name=name, port=port)
-        assert s.datadir() == expected
+        assert s.datadir() == Path(expected)
 
     @pytest.mark.parametrize(
         "name,port,expected",

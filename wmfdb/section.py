@@ -2,11 +2,12 @@
 
 import csv
 import os
-from typing import Dict, List
+from pathlib import Path
+from typing import Dict, List, Optional
 
 from wmfdb.exceptions import WmfdbIOError, WmfdbValueError
 
-DEFAULT_CFG_PATH = "/etc/wmfmariadbpy/section_ports.csv"
+DEFAULT_CFG_PATH = Path("/etc/wmfmariadbpy/section_ports.csv")
 TEST_DATA_ENV = "WMFDB_SECTION_MAP_TEST_DATA"
 # Use a string literal with splitlines(keepends=True) to keep the same format as a
 # file read from disk.
@@ -27,12 +28,12 @@ DEFAULT_PROM_PORT = 9104
 class SectionMap:
     """Class to map between section names and port numbers."""
 
-    def __init__(self, cfg_path: str = "", _load_cfg: bool = True) -> None:
+    def __init__(self, cfg_path: Optional[Path] = None, _load_cfg: bool = True) -> None:
         """Initialize the instance.
 
         Args:
-            cfg_path (str, optional): the config file to load. If not set, DEFAULT_CFG_PATH
-                is used.. Defaults to "".
+            cfg_path (Path, optional): the config file to load. If not set, DEFAULT_CFG_PATH
+                is used.
             _load_cfg (bool, optional): If True, loads config on instance initialisation.
                 Used to by-pass cfg loading during unit testing. Defaults to True.
         """
@@ -43,14 +44,14 @@ class SectionMap:
             cfg = self._get_cfg_file(cfg_path)
             self._parse_cfg(cfg)
 
-    def _get_cfg_file(self, path: str) -> List[str]:
+    def _get_cfg_file(self, path: Optional[Path]) -> List[str]:
         """Get the contents of the config file.
 
-        If path is "", and $WMFDB_SECTION_MAP_TEST_DATA is set in
+        If path is None, and $WMFDB_SECTION_MAP_TEST_DATA is set in
         the environment, test data is returned instead.
 
         Args:
-            path (str): the config file to load.
+            path (Path): the config file to load.
 
         Raises:
             WmfdbIOError: if unable to open the file.
@@ -58,7 +59,7 @@ class SectionMap:
         Returns:
             List[str]: lines of the config.
         """
-        if not path:
+        if path is None:
             if TEST_DATA_ENV in os.environ:
                 return TEST_DATA
             path = DEFAULT_CFG_PATH
@@ -180,25 +181,25 @@ class Section:
         self.name = name
         self.port = port
 
-    def socket_path(self) -> str:
+    def socket_path(self) -> Path:
         """Return the unix socket path.
 
         Returns:
-            str: path to the unix socket for mysqld. E.g. /run/mysqld/mysqld.s8.sock
+            Path: path to the unix socket for mysqld. E.g. /run/mysqld/mysqld.s8.sock
         """
         if self.name == DEFAULT_SECTION:
-            return "/run/mysqld/mysqld.sock"
-        return f"/run/mysqld/mysqld.{self.name}.sock"
+            return Path("/run/mysqld/mysqld.sock")
+        return Path(f"/run/mysqld/mysqld.{self.name}.sock")
 
-    def datadir(self) -> str:
+    def datadir(self) -> Path:
         """Return the mysql data directory.
 
         Returns:
-            str: path to the data directory. E.g. /srv/sqldata.s8
+            Path: path to the data directory. E.g. /srv/sqldata.s8
         """
         if self.name == DEFAULT_SECTION:
-            return "/srv/sqldata"
-        return f"/srv/sqldata.{self.name}"
+            return Path("/srv/sqldata")
+        return Path(f"/srv/sqldata.{self.name}")
 
     def prom_port(self) -> int:
         """Return the prometheus exporter port.
