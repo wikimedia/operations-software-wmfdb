@@ -84,7 +84,7 @@ class SectionMap:
             if not section.strip():
                 raise WmfdbValueError(f"Line {line_num} of config has a blank section entry")
             try:
-                port = int(port_str, base=10)
+                port = int(port_str)
             except ValueError:
                 raise WmfdbValueError(
                     f"Line {line_num} of config has a invalid port number: {port_str}"

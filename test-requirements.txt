@@ -4,4 +4,5 @@ pip>=20.1b1
 pytest
 pytest-cov
 pytest-mock
+types-PyMySQL
 types-setuptools

@@ -1,0 +1,4 @@
+[client]
+user = user2
+ssl-verify-server-cert
+max_allowed_packet = 32M
