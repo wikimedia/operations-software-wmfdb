@@ -33,6 +33,24 @@
       "message": "From https://docs.python.org/3/library/configparser.html#configparser.ConfigParser.read_file I *think* using path now you can drop the source parameter entirely. f.name should use the full path.",
       "revId": "79efca480faab6583adba6b39e9941b2b89cad14",
       "serverId": "e9e9afe9-4712-486d-8885-f54b72dd1951"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "3119f75b_86632cab",
+        "filename": "wmfdb/mycnf.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 104,
+      "author": {
+        "id": 8161
+      },
+      "writtenOn": "2021-12-22T15:05:48Z",
+      "side": 1,
+      "message": "You are correct, done :)",
+      "parentUuid": "64dd9074_f63f1389",
+      "revId": "79efca480faab6583adba6b39e9941b2b89cad14",
+      "serverId": "e9e9afe9-4712-486d-8885-f54b72dd1951"
     }
   ]
 }
