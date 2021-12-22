@@ -19,6 +19,16 @@ def build_parser(
     description: Optional[str],
     epilog: Optional[str],
 ) -> argparse.ArgumentParser:
+    """Build argparse parser for mysql cli wrappers.
+
+    Args:
+        prog (str): Name of program.
+        description (Optional[str]): argparse Description.
+        epilog (Optional[str]): argparse Epilog.
+
+    Returns:
+        argparse.ArgumentParser: Configured parser
+    """
     parser = argparse.ArgumentParser(
         prog=prog,
         description=description,
@@ -35,6 +45,17 @@ def build_parser(
 
 
 def build_args(host: str, port: int, skip_ssl: bool, rest: List[str]) -> List[str]:
+    """Build cmdline for mysql cli
+
+    Args:
+        host (str): Mysql host.
+        port (int): Mysql port.
+        skip_ssl (bool): Don't add ssl verification.
+        rest (List[str]): Additional parameters to pass to mysql.
+
+    Returns:
+        List[str]: mysql cli arguments.
+    """
     args = [CMD]
     if host.startswith("clouddb"):
         # This has to appear before any other options.
@@ -51,7 +72,14 @@ def build_args(host: str, port: int, skip_ssl: bool, rest: List[str]) -> List[st
 def ssl_args(
     ssl_ca: Optional[str] = DEF_CA,
 ) -> List[str]:
-    """Add desired args to mysql commandline."""
+    """Add desired args to mysql commandline.
+
+    Args:
+        ssl_ca (Optional[str], optional): Path to ssl CA. Defaults to DEF_CA.
+
+    Returns:
+        List[str]: mysql cli arguments.
+    """
     args = []
     args.append("--ssl")
     if ssl_ca is not None:
