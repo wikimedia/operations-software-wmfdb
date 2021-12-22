@@ -1,0 +1,89 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "603295b0_d2685948",
+        "filename": "wmfdb/mycnf.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 49,
+      "author": {
+        "id": 3215
+      },
+      "writtenOn": "2021-12-22T11:46:40Z",
+      "side": 1,
+      "message": "It\u0027s important here to specify here and in the class docstring what is the order in which they are looked for, if first win or last win.",
+      "revId": "a92b81696af261ca5aa9751f058ca0f8ff712c18",
+      "serverId": "e9e9afe9-4712-486d-8885-f54b72dd1951"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6bc0b2d0_19220ca0",
+        "filename": "wmfdb/mycnf.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 122,
+      "author": {
+        "id": 3215
+      },
+      "writtenOn": "2021-12-22T11:46:40Z",
+      "side": 1,
+      "message": "[nit, optional] current best practices suggest to use pathlib whenever possible.",
+      "revId": "a92b81696af261ca5aa9751f058ca0f8ff712c18",
+      "serverId": "e9e9afe9-4712-486d-8885-f54b72dd1951"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6ce8d979_574a20f6",
+        "filename": "wmfdb/mycnf.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 160,
+      "author": {
+        "id": 3215
+      },
+      "writtenOn": "2021-12-22T11:46:40Z",
+      "side": 1,
+      "message": "There is a case not covered here:\n\n  foo \u003d \"some # value\"  # some comment # with other hashtags\n\nAFAICT this would return:\n\n  \"some\n\ninstead of:\n\n  some # value\n\nThe full solution is not as trivial as changing index() with rindex() unfortunately.",
+      "revId": "a92b81696af261ca5aa9751f058ca0f8ff712c18",
+      "serverId": "e9e9afe9-4712-486d-8885-f54b72dd1951"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "026c526b_4760b8b3",
+        "filename": "wmfdb/mycnf.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 163,
+      "author": {
+        "id": 3215
+      },
+      "writtenOn": "2021-12-22T11:46:40Z",
+      "side": 1,
+      "message": "[optional] Correct me if I\u0027m wrong, but it seems to me that None is never a returned value. If that\u0027s the case you could just return None when the key is not found and drop the tuple from all the method signatures. Totally optional and maybe there will be valid cases for None.",
+      "revId": "a92b81696af261ca5aa9751f058ca0f8ff712c18",
+      "serverId": "e9e9afe9-4712-486d-8885-f54b72dd1951"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1ac04a36_94ac074a",
+        "filename": "wmfdb/mycnf.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 254,
+      "author": {
+        "id": 3215
+      },
+      "writtenOn": "2021-12-22T11:46:40Z",
+      "side": 1,
+      "message": "[optional] to be picky this method seems to not belong to this class, both from an SRP (Single Responsability Principle) point of view and for the fact that is specific to pymsql, while I guess the Cnf parser could be used also in different contextes.\nThat said I\u0027m not sure what to suggest, you could have a separate class that at that point handles also the pymysql connection, have a helper function that has the same functionality of this method or rename this method to pymysql_conn_args.",
+      "revId": "a92b81696af261ca5aa9751f058ca0f8ff712c18",
+      "serverId": "e9e9afe9-4712-486d-8885-f54b72dd1951"
+    }
+  ]
+}

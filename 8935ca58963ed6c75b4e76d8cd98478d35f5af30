@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "f92396b5_3ccec708",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 3215
+      },
+      "writtenOn": "2021-12-22T11:46:40Z",
+      "side": 1,
+      "message": "I did a pass, looks good to me in general, I have left some general question/comment inline and I think there is a case not covered.",
+      "revId": "8935ca58963ed6c75b4e76d8cd98478d35f5af30",
+      "serverId": "e9e9afe9-4712-486d-8885-f54b72dd1951"
+    }
+  ]
+}
