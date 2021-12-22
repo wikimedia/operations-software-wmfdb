@@ -13,7 +13,7 @@ import wmfdb.mysql_cli as mysql_cli
         ("clouddb1099.eqiad.wmnet", 3306, False, ["arg1", "--arg2"]),
     ],
 )
-def test_build_args(host, port, skip_ssl, rest):
+def test_build_args(host: str, port: int, skip_ssl: bool, rest: List[str]) -> None:
     args = mysql_cli.build_args(host, port, skip_ssl, rest)
     assert args.pop(0) == mysql_cli.CMD
     if host.startswith("clouddb"):

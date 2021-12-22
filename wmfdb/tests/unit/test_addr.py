@@ -2,13 +2,14 @@ import ipaddress
 import socket
 
 import pytest
+from pytest_mock import MockerFixture
 
 from wmfdb import addr
 from wmfdb.exceptions import WmfdbValueError
 from wmfdb.section import SectionMap
 
 
-def test_resolve_ip(mocker):
+def test_resolve_ip(mocker: MockerFixture) -> None:
     ip_str = "127.0.0.1"
     dc_mock = mocker.patch("wmfdb.addr._dc_map")
     res_ip_mock = mocker.patch("wmfdb.addr._resolve_ip")
@@ -18,7 +19,7 @@ def test_resolve_ip(mocker):
     assert ret == res_ip_mock.return_value
 
 
-def test_resolve_host(mocker):
+def test_resolve_host(mocker: MockerFixture) -> None:
     host = "localhost"
     dc_mock = mocker.patch("wmfdb.addr._dc_map")
     res_ip_mock = mocker.patch("wmfdb.addr._resolve_ip")
@@ -37,13 +38,13 @@ def test_resolve_host(mocker):
         ("2001:db8::11", "host-2001:db8::11"),
     ],
 )
-def test__resolve_ip(mocker, ip, host):
+def test__resolve_ip(mocker: MockerFixture, ip: str, host: str) -> None:
     m = mocker.patch("wmfdb.addr.socket.gethostbyaddr")
     m.side_effect = lambda ip: ("host-%s" % ip, None, None)
     assert addr._resolve_ip(ipaddress.ip_address(ip)) == host
 
 
-def test__resolve_ip_error(mocker):
+def test__resolve_ip_error(mocker: MockerFixture) -> None:
     m = mocker.patch("wmfdb.addr.socket.gethostbyaddr")
     m.side_effect = socket.herror()
     with pytest.raises(WmfdbValueError, match="Unable to resolve"):
@@ -57,17 +58,17 @@ def test__resolve_ip_error(mocker):
         ("h6003", "h6003.drmrs.wmnet"),
     ],
 )
-def test_dc_map(host, expected):
+def test_dc_map(host: str, expected: str) -> None:
     assert addr._dc_map(host) == expected
 
 
-def test_dc_map_no_dcid(mocker):
+def test_dc_map_no_dcid(mocker: MockerFixture) -> None:
     m = mocker.patch("wmfdb.addr.socket.getfqdn")
     assert addr._dc_map("host333") == m.return_value
     m.assert_called_once_with("host333")
 
 
-def test_dc_map_bad_dcid():
+def test_dc_map_bad_dcid() -> None:
     with pytest.raises(WmfdbValueError, match="Unknown datacenter ID"):
         addr._dc_map("host9001")
 
@@ -90,11 +91,12 @@ def test_dc_map_bad_dcid():
         ("db2099.codfw.wmnet:f1", "db2099.codfw.wmnet", 10111),
     ],
 )
-def test_split(addr_, host, port):
+def test_split(addr_: str, host: str, port: int) -> None:
     sm = SectionMap()
     assert addr.split(addr_, sm) == (host, port)
 
 
-def test_split_invalid():
+def test_split_invalid() -> None:
+    sm = SectionMap()
     with pytest.raises(WmfdbValueError, match=r"Invalid .*ipv6.* format"):
-        addr.split("[1::", None)
+        addr.split("[1::", sm)
