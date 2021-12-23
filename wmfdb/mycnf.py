@@ -75,7 +75,7 @@ class Cnf:
         """
         return key.replace("-", "_")
 
-    def load_cfgs(self, paths: Iterable[Path] = DEF_CFG_LIST) -> None:
+    def load_cfgs(self, paths: Iterable[Path] = DEF_CFG_LIST) -> int:
         """Load my.cnf files in order.
 
         Any paths that don't exist or aren't readable are skipped.
@@ -83,10 +83,14 @@ class Cnf:
         Args:
             paths (Iterable[Path], optional): Paths to load. Defaults to
                 DEF_CFG_LIST.
+
+        Returns:
+            int: Number of config files loaded.
         """
         paths = self._find_cfgs(paths)
         for path in paths:
             self._load_cfg(path)
+        return len(paths)
 
     def _load_cfg(self, path: Path) -> None:
         """Load a my.cnf file.
