@@ -18,6 +18,24 @@
       "serverId": "e9e9afe9-4712-486d-8885-f54b72dd1951"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "acf335da_1eada73e",
+        "filename": "wmfdb/mycnf.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 182,
+      "author": {
+        "id": 8161
+      },
+      "writtenOn": "2021-12-23T10:19:01Z",
+      "side": 1,
+      "message": "First matching closing quote char wins. I\u0027ll try to figure out how to word this clearer.\n\nDone.",
+      "parentUuid": "074a42d3_db89e24e",
+      "revId": "474eeb93966278cbacfbcc68c7dec12a9dd61268",
+      "serverId": "e9e9afe9-4712-486d-8885-f54b72dd1951"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "24a4938f_fe139cdf",
@@ -31,6 +49,24 @@
       "writtenOn": "2021-12-23T10:10:16Z",
       "side": 1,
       "message": "Is this supposed to be here?",
+      "revId": "474eeb93966278cbacfbcc68c7dec12a9dd61268",
+      "serverId": "e9e9afe9-4712-486d-8885-f54b72dd1951"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "1c8566a3_5c00837d",
+        "filename": "wmfdb/mycnf.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 192,
+      "author": {
+        "id": 8161
+      },
+      "writtenOn": "2021-12-23T10:19:01Z",
+      "side": 1,
+      "message": "Hah, nope. Fixed, thanks :)",
+      "parentUuid": "24a4938f_fe139cdf",
       "revId": "474eeb93966278cbacfbcc68c7dec12a9dd61268",
       "serverId": "e9e9afe9-4712-486d-8885-f54b72dd1951"
     }

@@ -41,6 +41,30 @@
       "serverId": "e9e9afe9-4712-486d-8885-f54b72dd1951"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "373535bc_10a84ece",
+        "filename": "wmfdb/mycnf.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 178,
+      "author": {
+        "id": 8161
+      },
+      "writtenOn": "2021-12-23T10:19:01Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "0c0d1888_75bc26e4",
+      "range": {
+        "startLine": 178,
+        "startChar": 34,
+        "endLine": 178,
+        "endChar": 35
+      },
+      "revId": "895a93375d882600c0bcf130e8c52ea6f267dd82",
+      "serverId": "e9e9afe9-4712-486d-8885-f54b72dd1951"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "9317b6ce_76943a08",
@@ -64,6 +88,30 @@
       "serverId": "e9e9afe9-4712-486d-8885-f54b72dd1951"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "fd879169_0e951c46",
+        "filename": "wmfdb/mycnf.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 180,
+      "author": {
+        "id": 8161
+      },
+      "writtenOn": "2021-12-23T10:19:01Z",
+      "side": 1,
+      "message": "Fixed.",
+      "parentUuid": "9317b6ce_76943a08",
+      "range": {
+        "startLine": 180,
+        "startChar": 28,
+        "endLine": 180,
+        "endChar": 46
+      },
+      "revId": "895a93375d882600c0bcf130e8c52ea6f267dd82",
+      "serverId": "e9e9afe9-4712-486d-8885-f54b72dd1951"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "1a49ef7c_47e1d5ff",
@@ -77,6 +125,30 @@
       "writtenOn": "2021-12-23T10:09:48Z",
       "side": 1,
       "message": "[nit, optional] could be replaced with \u0027if not val or...\u0027",
+      "range": {
+        "startLine": 193,
+        "startChar": 11,
+        "endLine": 193,
+        "endChar": 24
+      },
+      "revId": "895a93375d882600c0bcf130e8c52ea6f267dd82",
+      "serverId": "e9e9afe9-4712-486d-8885-f54b72dd1951"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "625b261a_19f08a6c",
+        "filename": "wmfdb/mycnf.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 193,
+      "author": {
+        "id": 8161
+      },
+      "writtenOn": "2021-12-23T10:19:01Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "1a49ef7c_47e1d5ff",
       "range": {
         "startLine": 193,
         "startChar": 11,
