@@ -1,0 +1,90 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "b76fcb34_6426366b",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 3215
+      },
+      "writtenOn": "2021-12-23T10:09:48Z",
+      "side": 1,
+      "message": "LGTM, for a definition of \"good\" compatible with the upstream nonsense. Nits inline.",
+      "revId": "895a93375d882600c0bcf130e8c52ea6f267dd82",
+      "serverId": "e9e9afe9-4712-486d-8885-f54b72dd1951"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0c0d1888_75bc26e4",
+        "filename": "wmfdb/mycnf.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 178,
+      "author": {
+        "id": 3215
+      },
+      "writtenOn": "2021-12-23T10:09:48Z",
+      "side": 1,
+      "message": "typo: \u0027",
+      "range": {
+        "startLine": 178,
+        "startChar": 34,
+        "endLine": 178,
+        "endChar": 35
+      },
+      "revId": "895a93375d882600c0bcf130e8c52ea6f267dd82",
+      "serverId": "e9e9afe9-4712-486d-8885-f54b72dd1951"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9317b6ce_76943a08",
+        "filename": "wmfdb/mycnf.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 180,
+      "author": {
+        "id": 3215
+      },
+      "writtenOn": "2021-12-23T10:09:48Z",
+      "side": 1,
+      "message": "typo? After the first comment after the closing quote char",
+      "range": {
+        "startLine": 180,
+        "startChar": 28,
+        "endLine": 180,
+        "endChar": 46
+      },
+      "revId": "895a93375d882600c0bcf130e8c52ea6f267dd82",
+      "serverId": "e9e9afe9-4712-486d-8885-f54b72dd1951"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1a49ef7c_47e1d5ff",
+        "filename": "wmfdb/mycnf.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 193,
+      "author": {
+        "id": 3215
+      },
+      "writtenOn": "2021-12-23T10:09:48Z",
+      "side": 1,
+      "message": "[nit, optional] could be replaced with \u0027if not val or...\u0027",
+      "range": {
+        "startLine": 193,
+        "startChar": 11,
+        "endLine": 193,
+        "endChar": 24
+      },
+      "revId": "895a93375d882600c0bcf130e8c52ea6f267dd82",
+      "serverId": "e9e9afe9-4712-486d-8885-f54b72dd1951"
+    }
+  ]
+}
