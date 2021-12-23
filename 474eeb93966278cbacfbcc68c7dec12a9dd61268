@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "074a42d3_db89e24e",
+        "filename": "wmfdb/mycnf.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 182,
+      "author": {
+        "id": 8504
+      },
+      "writtenOn": "2021-12-23T10:10:16Z",
+      "side": 1,
+      "message": "This example disagrees with the L179/180 comment:\n\n`...strip everything after the closing quote char`\n\nWhen the example strips everything after the unquoted `#`, not after the closing quote char.\n\nI suspect the example is the intended behavior, and the comment is inaccurate.",
+      "revId": "474eeb93966278cbacfbcc68c7dec12a9dd61268",
+      "serverId": "e9e9afe9-4712-486d-8885-f54b72dd1951"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "24a4938f_fe139cdf",
+        "filename": "wmfdb/mycnf.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 192,
+      "author": {
+        "id": 8504
+      },
+      "writtenOn": "2021-12-23T10:10:16Z",
+      "side": 1,
+      "message": "Is this supposed to be here?",
+      "revId": "474eeb93966278cbacfbcc68c7dec12a9dd61268",
+      "serverId": "e9e9afe9-4712-486d-8885-f54b72dd1951"
+    }
+  ]
+}
