@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "f1416a1c_2fa6b595",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8504
+      },
+      "writtenOn": "2022-01-11T14:04:09Z",
+      "side": 1,
+      "message": "Just one nit, other than that, LGTM",
+      "revId": "c6622fe155f7bb113d5cf3e11138b593398d9bdb",
+      "serverId": "e9e9afe9-4712-486d-8885-f54b72dd1951"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "34da98d3_dc6c9905",
+        "filename": "wmfdb/db.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 88,
+      "author": {
+        "id": 8504
+      },
+      "writtenOn": "2022-01-11T14:04:09Z",
+      "side": 1,
+      "message": "Maybe add a note that while RFC 1123 allows hostnames to start with a digit, We Don\u0027t Do That Here.",
+      "revId": "c6622fe155f7bb113d5cf3e11138b593398d9bdb",
+      "serverId": "e9e9afe9-4712-486d-8885-f54b72dd1951"
+    }
+  ]
+}
