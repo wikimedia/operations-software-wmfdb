@@ -302,13 +302,14 @@ class Cnf:
             return None
         return True
 
-    def pymysql_conn_args(self) -> Dict[str, Any]:
+    def pymysql_conn_args(self, **kwargs: Any) -> Dict[str, Any]:
         """Generate pymysql Connection arguments from my.cnf settings.
+
+        Any arguments passed in take priority over my.cnf settings.
 
         Returns:
             Dict[str, Any]: kwargs to be passed to pymysql.connection.Connection
         """
-        args: Dict[str, Any] = {}
 
         def _set_arg(
             key: str,
@@ -316,12 +317,15 @@ class Cnf:
             arg: Optional[str] = None,
             get: Optional[Callable[[str], Any]] = None,
         ) -> None:
+            if key in kwargs:
+                # Don't overwrite anything that's already in kwargs.
+                return
             get = get or self.get_str
             arg = arg or key
             val = get(key)
             if val is None:
                 return
-            args[arg] = val
+            kwargs[arg] = val
 
         # All the args for pymysql that are readable from a my.cnf file
         _set_arg("user")
@@ -339,4 +343,4 @@ class Cnf:
         _set_arg("ssl_key")
         _set_arg("ssl_verify_server_cert", arg="ssl_verify_cert", get=self.get_no_value)
         _set_arg("ssl_verify_server_cert", arg="ssl_verify_identity", get=self.get_no_value)
-        return args
+        return kwargs

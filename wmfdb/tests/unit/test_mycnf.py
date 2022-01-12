@@ -299,8 +299,8 @@ class TestCnf:
     def test_pymysql_conn_args_one_cnf(self) -> None:
         c = mycnf.Cnf()
         c.load_cfgs([FIXTURES_BASE / "base.cnf"])
-        assert c.pymysql_conn_args() == {
-            "user": "user1",
+        assert c.pymysql_conn_args(user="override_user") == {
+            "user": "override_user",
             "port": 3999,
             "connect_timeout": 0.3,
             "max_allowed_packet": "16M",
