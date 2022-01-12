@@ -207,19 +207,21 @@ class Cnf:
             return val
         return val[:cmt_idx].rstrip()
 
-    def get_str(self, key: str) -> Tuple[str, bool]:
+    def get_str(self, key: str) -> Optional[str]:
         """Get string value of key.
 
         Args:
             key (str): key to find.
 
         Returns:
-            Tuple[str, bool]: value, key found.
+            Optional[str]: value if found, otherwise None.
         """
         _, val, ok = self._get(key)
-        return val, ok
+        if not ok:
+            return None
+        return val
 
-    def get_int(self, key: str) -> Tuple[int, bool]:
+    def get_int(self, key: str) -> Optional[int]:
         """Get int value of key.
 
         Args:
@@ -229,17 +231,17 @@ class Cnf:
             WmfdbValueError: if value is not integer.
 
         Returns:
-            Tuple[int, bool]: vaule, key found.
+            Optional[int]: value if found, otherwise None.
         """
         sec, val, ok = self._get(key)
         if not ok:
-            return 0, False
+            return None
         try:
-            return int(val), True
+            return int(val)
         except ValueError:
             raise WmfdbValueError(f'Mysql config value [{sec}]{key} has non-integer value: "{val}"')
 
-    def get_float(self, key: str) -> Tuple[float, bool]:
+    def get_float(self, key: str) -> Optional[float]:
         """Get float value of key.
 
         Args:
@@ -249,17 +251,17 @@ class Cnf:
             WmfdbValueError: if value is not float.
 
         Returns:
-            Tuple[float, bool]: value, key found.
+            Optional[float]: value if found, otherwise None.
         """
         sec, val, ok = self._get(key)
         if not ok:
-            return 0.0, False
+            return None
         try:
-            return float(val), True
+            return float(val)
         except ValueError:
             raise WmfdbValueError(f'Mysql config value [{sec}]{key} has non-float value: "{val}"')
 
-    def get_bool(self, key: str) -> Tuple[bool, bool]:
+    def get_bool(self, key: str) -> Optional[bool]:
         """Get bool value of key.
 
         Args:
@@ -269,34 +271,36 @@ class Cnf:
             WmfdbValueError: if value is not boolean.
 
         Returns:
-            Tuple[bool, bool]: value, key found.
+            Optional[bool]: value if found, otherwise None.
         """
         true_vals = ["true", "1", "on"]
         false_vals = ["false", "0", "off"]
         sec, val, ok = self._get(key)
         if not ok:
-            return False, False
+            return None
         if val.lower() in true_vals:
-            return True, True
+            return True
         if val.lower() in false_vals:
-            return False, True
+            return False
         raise WmfdbValueError(f'Mysql config value [{sec}]{key} has non-boolean value: "{val}"')
 
-    def get_no_value(self, key: str) -> Tuple[bool, bool]:
+    def get_no_value(self, key: str) -> Optional[bool]:
         """Get 'no value' value.
 
         Some keys have no value. E.g. `ssl_verify_server_cert`.
         So just detect if the key exists or not. (The return signature
-        is kept as a tuple for consistency with the other get_* methods.)
+        is for consistency with the other get_* methods.)
 
         Args:
             key (str): key to find.
 
         Returns:
-            Tuple[bool, bool]: key found, key found.
+            Optional[bool]: True if found, otherwise None.
         """
         _, _, ok = self._get(key)
-        return ok, ok
+        if not ok:
+            return None
+        return True
 
     def pymysql_conn_args(self) -> Dict[str, Any]:
         """Generate pymysql Connection arguments from my.cnf settings.
@@ -310,12 +314,12 @@ class Cnf:
             key: str,
             *,
             arg: Optional[str] = None,
-            get: Optional[Callable[[str], Tuple[Any, bool]]] = None,
+            get: Optional[Callable[[str], Any]] = None,
         ) -> None:
             get = get or self.get_str
             arg = arg or key
-            val, ok = get(key)
-            if not ok:
+            val = get(key)
+            if val is None:
                 return
             args[arg] = val
 

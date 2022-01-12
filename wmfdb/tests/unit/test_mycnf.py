@@ -196,21 +196,27 @@ class TestCnf:
         m = mocker.patch("wmfdb.mycnf.Cnf._get")
         m.return_value = ["section", "foo", True]
         c = mycnf.Cnf()
-        assert c.get_str("key") == ("foo", True)
+        assert c.get_str("key") == "foo"
         m.assert_called_once_with("key")
+
+    def test_get_str_missing(self, mocker: MockerFixture) -> None:
+        m = mocker.patch("wmfdb.mycnf.Cnf._get")
+        m.return_value = ["", "", False]
+        c = mycnf.Cnf()
+        assert c.get_str("key") is None
 
     def test_get_int(self, mocker: MockerFixture) -> None:
         m = mocker.patch("wmfdb.mycnf.Cnf._get")
         m.return_value = ["section", "1001", True]
         c = mycnf.Cnf()
-        assert c.get_int("key") == (1001, True)
+        assert c.get_int("key") == 1001
         m.assert_called_once_with("key")
 
     def test_get_int_missing(self, mocker: MockerFixture) -> None:
         m = mocker.patch("wmfdb.mycnf.Cnf._get")
         m.return_value = ["", "", False]
         c = mycnf.Cnf()
-        assert c.get_int("key") == (0, False)
+        assert c.get_int("key") is None
 
     def test_get_int_err(self, mocker: MockerFixture) -> None:
         m = mocker.patch("wmfdb.mycnf.Cnf._get")
@@ -225,14 +231,14 @@ class TestCnf:
         m = mocker.patch("wmfdb.mycnf.Cnf._get")
         m.return_value = ["section", "1001.03", True]
         c = mycnf.Cnf()
-        assert c.get_float("key") == (1001.03, True)
+        assert c.get_float("key") == 1001.03
         m.assert_called_once_with("key")
 
     def test_get_float_missing(self, mocker: MockerFixture) -> None:
         m = mocker.patch("wmfdb.mycnf.Cnf._get")
         m.return_value = ["", "", False]
         c = mycnf.Cnf()
-        assert c.get_float("key") == (0, False)
+        assert c.get_float("key") is None
 
     def test_get_float_err(self, mocker: MockerFixture) -> None:
         m = mocker.patch("wmfdb.mycnf.Cnf._get")
@@ -260,14 +266,14 @@ class TestCnf:
         m = mocker.patch("wmfdb.mycnf.Cnf._get")
         m.return_value = ["section", val, True]
         c = mycnf.Cnf()
-        assert c.get_bool("key") == (expected, True)
+        assert c.get_bool("key") == expected
         m.assert_called_once_with("key")
 
     def test_get_bool_missing(self, mocker: MockerFixture) -> None:
         m = mocker.patch("wmfdb.mycnf.Cnf._get")
         m.return_value = ["", "", False]
         c = mycnf.Cnf()
-        assert c.get_bool("key") == (False, False)
+        assert c.get_bool("key") is None
 
     def test_get_bool_err(self, mocker: MockerFixture) -> None:
         m = mocker.patch("wmfdb.mycnf.Cnf._get")
@@ -282,13 +288,13 @@ class TestCnf:
         m = mocker.patch("wmfdb.mycnf.Cnf._get")
         m.return_value = ["test_section", None, True]
         c = mycnf.Cnf()
-        assert c.get_no_value("key") == (True, True)
+        assert c.get_no_value("key")
 
     def test_get_no_value_missing(self, mocker: MockerFixture) -> None:
         m = mocker.patch("wmfdb.mycnf.Cnf._get")
         m.return_value = ["test_section", None, False]
         c = mycnf.Cnf()
-        assert c.get_no_value("key") == (False, False)
+        assert not c.get_no_value("key")
 
     def test_pymysql_conn_args_one_cnf(self) -> None:
         c = mycnf.Cnf()
