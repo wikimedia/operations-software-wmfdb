@@ -2,8 +2,9 @@
 
 import configparser
 import os
+import re
 from pathlib import Path
-from typing import Any, Callable, Dict, Iterable, List, Optional, Tuple
+from typing import Any, Callable, Dict, Iterable, List, NamedTuple, Optional, Tuple
 
 from wmfdb.exceptions import WmfdbIOError, WmfdbValueError
 
@@ -344,3 +345,90 @@ class Cnf:
         _set_arg("ssl_verify_server_cert", arg="ssl_verify_cert", get=self.get_no_value)
         _set_arg("ssl_verify_server_cert", arg="ssl_verify_identity", get=self.get_no_value)
         return kwargs
+
+
+class _PatternCnf(NamedTuple):
+    pat: "re.Pattern[str]"
+    cnf: Cnf
+
+
+class CnfSelector:
+    """Class to handle mapping a host to a Cnf.
+
+    This is a convenince class. It simplifies the most common use-case:
+    given a set of my.cnf files, and a hostname, return the correct pymysql
+    connection arguments.
+    """
+
+    def __init__(
+        self,
+        def_section_order: Iterable[str] = DEF_SECTION_LIST,
+        section_order_map: Optional[Iterable[Tuple[str, Iterable[str]]]] = None,
+        **kwargs: Any,
+    ) -> None:
+        """Initialize the instance.
+
+        The default values should be sufficient for most use-cases.
+
+        Args:
+            def_section_order (Iterable[str], optional): Section order to use if
+                no pattern in section_order_map matches. Defaults to
+                DEF_SECTION_LIST.
+            section_order_map (Optional[Iterable[Tuple[str, Iterable[str]]]], optional):
+                Map of regular expression to section order. If not specified,
+                a default map is used that matches "clouddb.*".
+        """
+        if section_order_map is None:
+            section_order_map = [
+                ("clouddb.*", ("clientlabsdb",) + DEF_SECTION_LIST),
+            ]
+        self._def_cnf = Cnf(def_section_order, **kwargs)
+        self._cnfs: List[_PatternCnf] = []
+        for pat, sec_list in section_order_map:
+            rx = re.compile(pat)
+            self._cnfs.append(_PatternCnf(rx, Cnf(sec_list, **kwargs)))
+
+    def load_cfgs(self, paths: Iterable[Path] = DEF_CFG_LIST) -> int:
+        """Load my.cnf files in order, for each Cnf.
+
+        Args:
+            paths (Iterable[Path], optional): Paths to load.
+                Defaults to DEF_CFG_LIST.
+
+        Returns:
+            int: Number of config files loaded.
+        """
+        c = self._def_cnf.load_cfgs(paths)
+        for _, cnf in self._cnfs:
+            cnf.load_cfgs(paths)
+        # Number of files loaded should be identical, so just
+        # return the first result.
+        return c
+
+    def get_cnf(self, host: str) -> Cnf:
+        """For a given hostname, return the relevant Cnf
+
+        Args:
+            host (str): hostname to match.
+
+        Returns:
+            Cnf: instance for the hostname.
+        """
+        for pat, cnf in self._cnfs:
+            if pat.fullmatch(host):
+                return cnf
+        return self._def_cnf
+
+    def pymysql_conn_args(self, *, host: str, **kwargs: Any) -> Dict[str, Any]:
+        """For a given hostname, return the pymsql connection args.
+
+        Any arguments passed in take priority over my.cnf settings.
+
+        Args:
+            host (str): hostname to match.
+
+        Returns:
+            Dict[str, Any]: kwargs to be passed to
+                pymysql.connection.Connection
+        """
+        return self.get_cnf(host).pymysql_conn_args(host=host, **kwargs)

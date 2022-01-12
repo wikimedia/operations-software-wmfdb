@@ -1,5 +1,7 @@
+import re
 from pathlib import Path
-from unittest.mock import call
+from typing import Any, List
+from unittest.mock import call, create_autospec
 
 import pytest
 from pytest_mock import MockerFixture
@@ -48,12 +50,10 @@ class TestCnf:
         paths = (Path("load1"), Path("load2"), Path("load3"))
         c.load_cfgs(paths)
         m_find_cfgs.assert_called_once_with(paths)
-        m_load_cfg.assert_has_calls(
-            [
-                call("find1"),
-                call("find2"),
-            ]
-        )
+        assert m_load_cfg.call_args_list == [
+            call("find1"),
+            call("find2"),
+        ]
 
     def test__load_cfg(self) -> None:
         cnf_path = FIXTURES_BASE / "base.cnf"
@@ -114,12 +114,11 @@ class TestCnf:
         m_cleanup = mocker.patch("wmfdb.mycnf.Cnf._cleanup_value")
         c = mycnf.Cnf(section_order=["clientextra"] + list(mycnf.DEF_SECTION_LIST))
         assert c._get("port") == ("client", m_cleanup.return_value, True)
-        m_cp.return_value.has_option.assert_has_calls(
-            [
-                call("clientextra", "port"),
-                call("client", "port"),
-            ]
-        )
+        assert m_cp.return_value.has_option.call_args_list == [
+            call("clientextra", "port"),
+            call("client", "port"),
+        ]
+
         m_cp.return_value.get.assert_called_once_with("client", "port")
         m_cleanup.assert_called_once_with(m_cp.return_value.get.return_value)
 
@@ -335,3 +334,70 @@ class TestCnf:
             "max_allowed_packet": "16M",
             "ssl_ca": "/path/to/#/CA.pem",
         }
+
+
+class TestCnfSelector:
+    @pytest.fixture(autouse=True)
+    def mock_cnf(self, mocker: MockerFixture) -> None:
+        self.m_cnf = mocker.patch("wmfdb.mycnf.Cnf", side_effect=self.mock_cnf_factory)
+        self.mock_cnfs: List[Any] = []
+
+    def mock_cnf_factory(self, *args: Any, **kwargs: Any) -> Any:
+        m = create_autospec(mycnf.Cnf, spec_set=True)(*args, **kwargs)
+        self.mock_cnfs.append(m)
+        return m
+
+    def test_init_defaults(self) -> None:
+        self.m_cnf.return_value
+        cs = mycnf.CnfSelector()
+        assert self.m_cnf.call_args_list == [
+            call(mycnf.DEF_SECTION_LIST),
+            call(("clientlabsdb", "client")),
+        ]
+        assert cs._def_cnf == self.mock_cnfs[0]
+        assert cs._cnfs[0].pat == re.compile("clouddb.*")
+        assert cs._cnfs[0].cnf == self.mock_cnfs[1]
+
+    def test_init_custom(self) -> None:
+        cs = mycnf.CnfSelector(
+            def_section_order=("def1", "def2"),
+            section_order_map=[
+                ("aaaa", ("a1", "a2", "a3")),
+                ("bbbb.*", ("b1")),
+            ],
+            user="user1",
+            port=9999,
+        )
+        assert self.m_cnf.call_args_list == [
+            call(("def1", "def2"), user="user1", port=9999),
+            call(("a1", "a2", "a3"), user="user1", port=9999),
+            call(("b1"), user="user1", port=9999),
+        ]
+        assert cs._def_cnf == self.mock_cnfs[0]
+        assert cs._cnfs[0].pat.pattern == "aaaa"
+        assert cs._cnfs[0].cnf == self.mock_cnfs[1]
+        assert cs._cnfs[1].pat.pattern == "bbbb.*"
+        assert cs._cnfs[1].cnf == self.mock_cnfs[2]
+
+    def test_load_cfgs(self, mocker: MockerFixture) -> None:
+        cs = mycnf.CnfSelector()
+        assert cs.load_cfgs() == cs._def_cnf.load_cfgs.return_value  # type: ignore
+        assert cs._def_cnf.load_cfgs.call_args_list == [  # type: ignore
+            call(mycnf.DEF_CFG_LIST),
+        ]
+
+    def test_get_cnf_def(self) -> None:
+        cs = mycnf.CnfSelector()
+        assert cs.get_cnf("db9999") == cs._def_cnf
+
+    def test_get_cnf_clouddb(self) -> None:
+        cs = mycnf.CnfSelector()
+        assert cs.get_cnf("clouddb9999") == cs._cnfs[0].cnf
+
+    def test_pymsql_conn_args(self, mocker: MockerFixture) -> None:
+        cs = mycnf.CnfSelector()
+        cnf = self.mock_cnfs[0]
+        setattr(cs, "get_cnf", mocker.MagicMock(return_value=cnf))
+        cs.pymysql_conn_args(host="db9999", arg1="arg1a")
+        cs.get_cnf.assert_called_once_with("db9999")  # type: ignore
+        cnf.pymysql_conn_args.assert_called_once_with(host="db9999", arg1="arg1a")
