@@ -11,3 +11,7 @@ class WmfdbValueError(WmfdbError):
 
 class WmfdbIOError(WmfdbError):
     """Generic wmfdb IO error."""
+
+
+class WmfdbDBError(WmfdbError):
+    """Generic wmfdb database error."""

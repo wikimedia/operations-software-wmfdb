@@ -1,9 +1,13 @@
 """DB module."""
+import logging
+from typing import Any, Generic, List, Optional, Text, Tuple, TypeVar
 
-from typing import Any, Generic, Iterable, Optional, Text, TypeVar
-
+import pymysql.constants
+import pymysql.err
 from pymysql.connections import Connection
 from pymysql.cursors import Cursor, DictCursor
+
+from wmfdb.exceptions import WmfdbDBError, WmfdbValueError
 
 _C = TypeVar("_C", bound=Cursor)
 
@@ -17,7 +21,6 @@ class DB:
         Args:
             kwargs: passed directly through to pymysql.connections.Connection.
         """
-        self._conn = Connection(**kwargs)
 
         self._user: Optional[str] = kwargs.get("user")
         self._host: str = kwargs.get("host", "localhost")
@@ -31,6 +34,12 @@ class DB:
             self._host = "localhost"
             self._port = None
 
+        logging.debug(f"wmfdb.db.DB: Connecting: {self.desc()}")
+        try:
+            self._conn = Connection(**kwargs)
+        except pymysql.err.OperationalError as e:
+            raise WmfdbDBError(e) from None
+
     def dict_cursor(self, *, timeout: Optional[float] = None) -> "CursorWrapper[DictCursor]":
         """Return a DictCursor wrapped in a CursorWrapper for this connection.
 
@@ -41,7 +50,7 @@ class DB:
         Returns:
             CursorWrapper[DictCursor]: cursor.
         """
-        return CursorWrapper(self._conn.cursor(cursor=DictCursor), timeout=timeout)
+        return CursorWrapper(self.addr(), self._conn.cursor(cursor=DictCursor), timeout=timeout)
 
     def cursor(self, *, timeout: Optional[float] = None) -> "CursorWrapper[Cursor]":
         """Return a Cursor wrapped in a CursorWrapper for this connection.
@@ -53,7 +62,7 @@ class DB:
         Returns:
             CursorWrapper[Cursor]: cursor.
         """
-        return CursorWrapper(self._conn.cursor(cursor=Cursor), timeout=timeout)
+        return CursorWrapper(self.addr(), self._conn.cursor(cursor=Cursor), timeout=timeout)
 
     def select_db(self, db: str) -> None:
         """Select database.
@@ -61,7 +70,12 @@ class DB:
         Args:
             db (str): Database to select.
         """
-        self._conn.select_db(db)
+        try:
+            self._conn.select_db(db)
+        except pymysql.err.OperationalError as e:
+            if e.args[0] == pymysql.constants.ER.BAD_DB_ERROR:
+                raise WmfdbValueError(e) from None
+            raise WmfdbDBError(e) from None
         self._curr_db = db
 
     def db(self) -> Optional[str]:
@@ -128,6 +142,9 @@ class DB:
             return d
         return f"{self._user}@{d}"
 
+    def __str__(self) -> str:
+        return self.desc()
+
     # ### Directly proxied methods ###
 
     def begin(self) -> None:
@@ -154,13 +171,15 @@ class CursorWrapper(Generic[_C]):
     customizations in the future.
 
     If a default timeout is set, but a given query should have no timeout,
-    pass in 0.0 as the timeout value to execute()/executemany()/mogrify().
+    pass in 0.0 as the timeout value to execute()/mogrify().
+
+    executemany() is not supported.
 
     Args:
         Generic ([Cursor]): pymysql.cursors.Cursor, or a subclass.
     """
 
-    def __init__(self, cursor: _C, *, timeout: Optional[float] = None) -> None:
+    def __init__(self, addr: str, cursor: _C, *, timeout: Optional[float] = None) -> None:
         """Initialize the instance.
 
         Args:
@@ -169,6 +188,7 @@ class CursorWrapper(Generic[_C]):
                 if no timeout is provided for execute/executemany/mogrify.
                 Defaults to None.
         """
+        self._addr = addr
         self._cur: _C = cursor
         self._def_tout = timeout
 
@@ -191,35 +211,13 @@ class CursorWrapper(Generic[_C]):
         Returns:
             int: Number of rows matched by query.
         """
+        q_str = self.mogrify(query, args, timeout=timeout)
+        logging.debug(f"{{{self._addr}}} Executing: {q_str}")
         query = self._add_timeout(query, timeout)
-        return self._cur.execute(query, args=args)
-
-    def executemany(
-        self,
-        query: Text,
-        args: Iterable[Any] = (),
-        *,
-        timeout: Optional[float] = None,
-    ) -> Optional[int]:
-        """Execute a query multiple times.
-
-        See the class docstring for how query timeouts are configured.
-        The timeout will be applied to each individual query run.
-
-        Args:
-            query (Text): Query to run.
-            args (Iterable[Any], optional): Sets of arguments for each run
-                of the query. If no args are provided, query is not run.
-                Defaults to ().
-            timeout (Optional[float], optional): Per-run query timeout.
-                Defaults to None.
-
-        Returns:
-            Optional[int]: If args were provided, sum of rows matched by
-                all runs of the query.
-        """
-        query = self._add_timeout(query, timeout)
-        return self._cur.executemany(query, args=args)
+        try:
+            return self._cur.execute(query, args=args)
+        except (pymysql.err.ProgrammingError, pymysql.err.OperationalError) as e:
+            raise WmfdbDBError(f"{{{self._addr}}} Error executing query ({q_str}): {e}")
 
     def mogrify(
         self,
@@ -270,7 +268,22 @@ class CursorWrapper(Generic[_C]):
             return f"SET STATEMENT max_statement_time={timeout} FOR {query}"
         return query
 
+    def result_meta(self) -> Tuple[List[str], int]:
+        """Return metadata for query result.
+
+        Returns:
+            Tuple[List[str], int]: list of column names, rows matched.
+        """
+        names = []
+        if self.description:
+            for col in self.description:
+                names.append(col[0])
+        return names, self.rowcount
+
     def __getattr__(self, attr: str) -> Any:
+        if attr == "executemany":
+            # Not supported - there's no good way to provide useful errors
+            raise NotImplementedError
         return getattr(self._cur, attr)
 
     def __enter__(self) -> "CursorWrapper[_C]":
