@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "38e8c9c2_9714e7fb",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8504
+      },
+      "writtenOn": "2022-01-14T14:55:42Z",
+      "side": 1,
+      "message": "One very minor nit, other than that LGTM",
+      "revId": "a616e31ee3e3580256d457a5dd03c1d570e91f76",
+      "serverId": "e9e9afe9-4712-486d-8885-f54b72dd1951"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "45d396fc_5de9edaa",
+        "filename": "wmfdb/mycnf.py",
+        "patchSetId": 3
+      },
+      "lineNbr": 404,
+      "author": {
+        "id": 8504
+      },
+      "writtenOn": "2022-01-14T14:55:42Z",
+      "side": 1,
+      "message": "This comment is confusing: identical to what? If we only return one result, what happens to the rest (is there a rest?)",
+      "revId": "a616e31ee3e3580256d457a5dd03c1d570e91f76",
+      "serverId": "e9e9afe9-4712-486d-8885-f54b72dd1951"
+    }
+  ]
+}
