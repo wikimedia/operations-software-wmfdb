@@ -51,6 +51,24 @@
       "parentUuid": "8186361c_16d14337",
       "revId": "e1427de2eaeb704fabbbfef728c90be42c24ecb5",
       "serverId": "e9e9afe9-4712-486d-8885-f54b72dd1951"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "46df23c8_0db7012c",
+        "filename": "wmfdb/mycnf.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 336,
+      "author": {
+        "id": 8504
+      },
+      "writtenOn": "2022-01-14T15:14:17Z",
+      "side": 1,
+      "message": "Alright, so principle of least surprise applies.",
+      "parentUuid": "bd045e86_ddabc964",
+      "revId": "e1427de2eaeb704fabbbfef728c90be42c24ecb5",
+      "serverId": "e9e9afe9-4712-486d-8885-f54b72dd1951"
     }
   ]
 }
