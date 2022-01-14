@@ -33,6 +33,24 @@
       "message": "This comment is confusing: identical to what? If we only return one result, what happens to the rest (is there a rest?)",
       "revId": "a616e31ee3e3580256d457a5dd03c1d570e91f76",
       "serverId": "e9e9afe9-4712-486d-8885-f54b72dd1951"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2780c588_201fe2bd",
+        "filename": "wmfdb/mycnf.py",
+        "patchSetId": 3
+      },
+      "lineNbr": 404,
+      "author": {
+        "id": 8161
+      },
+      "writtenOn": "2022-01-14T15:17:38Z",
+      "side": 1,
+      "message": "This method is loading the same set of config files into a number of Cnf objects. The result returned by each `.load_cfgs()` call is the number of config files it loaded, so it should be the same for each call.",
+      "parentUuid": "45d396fc_5de9edaa",
+      "revId": "a616e31ee3e3580256d457a5dd03c1d570e91f76",
+      "serverId": "e9e9afe9-4712-486d-8885-f54b72dd1951"
     }
   ]
 }
