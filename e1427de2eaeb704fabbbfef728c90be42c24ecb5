@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "660c88c9_e437826e",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8504
+      },
+      "writtenOn": "2022-01-14T14:57:43Z",
+      "side": 1,
+      "message": "One clarification question, otherwise LGTM.",
+      "revId": "e1427de2eaeb704fabbbfef728c90be42c24ecb5",
+      "serverId": "e9e9afe9-4712-486d-8885-f54b72dd1951"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8186361c_16d14337",
+        "filename": "wmfdb/mycnf.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 336,
+      "author": {
+        "id": 8504
+      },
+      "writtenOn": "2022-01-14T14:57:43Z",
+      "side": 1,
+      "message": "Does this prevent someone from explicitly connecting to localhost by TCP? Is that intended? If so, what if they use a localhost IP (`127.0.0.1` or `::1`)?",
+      "revId": "e1427de2eaeb704fabbbfef728c90be42c24ecb5",
+      "serverId": "e9e9afe9-4712-486d-8885-f54b72dd1951"
+    }
+  ]
+}
