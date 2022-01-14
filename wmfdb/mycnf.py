@@ -333,8 +333,10 @@ class Cnf:
         _set_arg("password")
         _set_arg("host")
         _set_arg("database")
-        _set_arg("socket", arg="unix_socket")
-        _set_arg("port", get=self.get_int)
+        if ("host" not in kwargs) or (kwargs["host"] == "localhost"):
+            _set_arg("socket", arg="unix_socket")
+        else:
+            _set_arg("port", get=self.get_int)
         _set_arg("default_character_set", arg="charset")
         _set_arg("connect_timeout", get=self.get_float)
         _set_arg("max_allowed_packet")

@@ -300,7 +300,7 @@ class TestCnf:
         c.load_cfgs([FIXTURES_BASE / "base.cnf"])
         assert c.pymysql_conn_args(user="override_user") == {
             "user": "override_user",
-            "port": 3999,
+            "unix_socket": "/run/mysqld/client.sock",
             "connect_timeout": 0.3,
             "max_allowed_packet": "16M",
             "ssl_ca": "/path/to/#/CA.pem",
@@ -316,7 +316,7 @@ class TestCnf:
         )
         assert c.pymysql_conn_args() == {
             "user": "user2",
-            "port": 3999,
+            "unix_socket": "/run/mysqld/client.sock",
             "connect_timeout": 0.3,
             "max_allowed_packet": "32M",
             "ssl_ca": "/path/to/#/CA.pem",
@@ -329,11 +329,32 @@ class TestCnf:
         c.load_cfgs([FIXTURES_BASE / "base.cnf"])
         assert c.pymysql_conn_args() == {
             "user": "user1_extra",
-            "port": 3999,
+            "unix_socket": "/run/mysqld/client.sock",
             "connect_timeout": 0.3,
             "max_allowed_packet": "16M",
             "ssl_ca": "/path/to/#/CA.pem",
         }
+
+    def test_pymsql_conn_args_no_host(self) -> None:
+        c = mycnf.Cnf()
+        c.load_cfgs([FIXTURES_BASE / "base.cnf"])
+        kwargs = c.pymysql_conn_args()
+        assert "unix_socket" in kwargs
+        assert "port" not in kwargs
+
+    def test_pymsql_conn_args_localhost(self) -> None:
+        c = mycnf.Cnf()
+        c.load_cfgs([FIXTURES_BASE / "base.cnf"])
+        kwargs = c.pymysql_conn_args(host="localhost")
+        assert "unix_socket" in kwargs
+        assert "port" not in kwargs
+
+    def test_pymsql_conn_args_hostname(self) -> None:
+        c = mycnf.Cnf()
+        c.load_cfgs([FIXTURES_BASE / "base.cnf"])
+        kwargs = c.pymysql_conn_args(host="db9999")
+        assert "unix_socket" not in kwargs
+        kwargs["port"] == 3999
 
 
 class TestCnfSelector:
