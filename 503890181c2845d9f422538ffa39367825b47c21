@@ -18,6 +18,24 @@
       "serverId": "e9e9afe9-4712-486d-8885-f54b72dd1951"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "d8e1c613_12647dec",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8161
+      },
+      "writtenOn": "2022-02-02T16:45:36Z",
+      "side": 1,
+      "message": "Now that i can finally use f-strings, you\u0027ll have to pry them from my cold dead hands, etc. ;)",
+      "parentUuid": "c6b3e2c9_c6305b26",
+      "revId": "503890181c2845d9f422538ffa39367825b47c21",
+      "serverId": "e9e9afe9-4712-486d-8885-f54b72dd1951"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "74a8609b_d2eb7109",
@@ -41,6 +59,30 @@
       "serverId": "e9e9afe9-4712-486d-8885-f54b72dd1951"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "f91cffe2_28d82243",
+        "filename": "wmfdb/cli_admin/db_mysql.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 18,
+      "author": {
+        "id": 8161
+      },
+      "writtenOn": "2022-02-02T16:45:36Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "74a8609b_d2eb7109",
+      "range": {
+        "startLine": 18,
+        "startChar": 21,
+        "endLine": 18,
+        "endChar": 27
+      },
+      "revId": "503890181c2845d9f422538ffa39367825b47c21",
+      "serverId": "e9e9afe9-4712-486d-8885-f54b72dd1951"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "49d8648e_4410c5c0",
@@ -54,6 +96,30 @@
       "writtenOn": "2022-02-02T15:02:47Z",
       "side": 1,
       "message": "Seems unrelated / some leftover?",
+      "range": {
+        "startLine": 50,
+        "startChar": 40,
+        "endLine": 50,
+        "endChar": 46
+      },
+      "revId": "503890181c2845d9f422538ffa39367825b47c21",
+      "serverId": "e9e9afe9-4712-486d-8885-f54b72dd1951"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "4d603cfa_ad98478d",
+        "filename": "wmfdb/cli_admin/db_mysql.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 50,
+      "author": {
+        "id": 8161
+      },
+      "writtenOn": "2022-02-02T16:45:36Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "49d8648e_4410c5c0",
       "range": {
         "startLine": 50,
         "startChar": 40,
