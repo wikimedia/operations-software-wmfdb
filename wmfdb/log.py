@@ -4,8 +4,6 @@ from typing import Union
 
 from wmfdb.exceptions import WmfdbValueError
 
-root_logger = logging.getLogger()
-
 
 def setup(level: Union[str, int] = logging.INFO) -> None:
     """Set up logging.
@@ -18,10 +16,11 @@ def setup(level: Union[str, int] = logging.INFO) -> None:
     """
     _check_level(level)
     formatter = logging.Formatter(
-        fmt="%(asctime)s %(process)d [%(levelname)s] %(filename)s:%(lineno)d - %(message)s"
+        fmt="%(asctime)s %(process)d [%(levelname)s] %(name)s:%(lineno)d - %(message)s"
     )
     stderr_handler = logging.StreamHandler()
     stderr_handler.setFormatter(formatter)
+    root_logger = logging.getLogger()
     root_logger.addHandler(stderr_handler)
     root_logger.setLevel(level)
 

@@ -10,6 +10,7 @@ from pymysql.cursors import Cursor, DictCursor
 from wmfdb.exceptions import WmfdbDBError, WmfdbValueError
 
 _C = TypeVar("_C", bound=Cursor)
+logger = logging.getLogger(__name__)
 
 
 class DB:
@@ -34,7 +35,7 @@ class DB:
             self._host = "localhost"
             self._port = None
 
-        logging.debug(f"wmfdb.db.DB: Connecting: {self.desc()}")
+        logger.debug(f"{{{self.addr()}}} Connecting.")
         try:
             self._conn = Connection(**kwargs)
         except pymysql.err.OperationalError as e:
@@ -76,7 +77,9 @@ class DB:
             if e.args[0] == pymysql.constants.ER.BAD_DB_ERROR:
                 raise WmfdbValueError(e) from None
             raise WmfdbDBError(e) from None
+        old_db = self._curr_db
         self._curr_db = db
+        logger.debug(f"{{{self.addr()}}} Changed db {old_db or '[none]'}->{db}.")
 
     def db(self) -> Optional[str]:
         """Return the currently selected database (if any).
@@ -212,7 +215,7 @@ class CursorWrapper(Generic[_C]):
             int: Number of rows matched by query.
         """
         q_str = self.mogrify(query, args, timeout=timeout)
-        logging.debug(f"{{{self._addr}}} Executing: {q_str}")
+        logger.debug(f"{{{self._addr}}} Executing: {q_str}")
         query = self._add_timeout(query, timeout)
         try:
             return self._cur.execute(query, args=args)

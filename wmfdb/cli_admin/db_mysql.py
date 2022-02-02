@@ -8,12 +8,14 @@ import wmfdb
 from wmfdb import addr, log, mysql_cli, section
 from wmfdb.exceptions import WmfdbError, WmfdbValueError
 
+logger = logging.getLogger(__name__)
+
 
 def main() -> None:
     try:
         run()
     except WmfdbError as e:
-        logging.fatal(f"{e}")
+        logger.fatal(f"{type(e).__name__}: {e}")
         sys.exit(1)
     except KeyboardInterrupt:
         print("Ctrl-c pressed ...")
@@ -43,8 +45,8 @@ def run() -> None:
     host = addr.resolve(host)
 
     args = mysql_cli.build_args(host, port, known.skip_ssl, rest)
-    logging.info(f"Execing: {args}")
+    logger.info(f"Execing: {args}")
     try:
         sys.exit(os.execvp(mysql_cli.CMD, args))
     except FileNotFoundError as e:
-        logging.fatal(f"Unable to execute command '{mysql_cli.CMD}': {e}")
+        logger.fatal(f"Unable to execute command '{mysql_cli.CMD}': {e}")
