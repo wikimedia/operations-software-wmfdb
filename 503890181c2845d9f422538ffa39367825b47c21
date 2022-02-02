@@ -1,0 +1,67 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "c6b3e2c9_c6305b26",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 3215
+      },
+      "writtenOn": "2022-02-02T15:02:47Z",
+      "side": 1,
+      "message": "LGTM, one general style comment:\nBy default pylint suggests to use the logging formatting for log messages and even has a warning for those lines that use a different formatting in logging messages (.debug(\u0027foo %s\u0027, bar) vs .debug(f\u0027foo {bar}\u0027). That behaviour can be changed in pylint\u0027s configuration, but is what is suggested to be used. Also the logging framework will generate the message only if needed, useful in some more heavy usage of the logging.",
+      "revId": "503890181c2845d9f422538ffa39367825b47c21",
+      "serverId": "e9e9afe9-4712-486d-8885-f54b72dd1951"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "74a8609b_d2eb7109",
+        "filename": "wmfdb/cli_admin/db_mysql.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 18,
+      "author": {
+        "id": 3215
+      },
+      "writtenOn": "2022-02-02T15:02:47Z",
+      "side": 1,
+      "message": "fatal(e) would do the same ;)",
+      "range": {
+        "startLine": 18,
+        "startChar": 21,
+        "endLine": 18,
+        "endChar": 27
+      },
+      "revId": "503890181c2845d9f422538ffa39367825b47c21",
+      "serverId": "e9e9afe9-4712-486d-8885-f54b72dd1951"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "49d8648e_4410c5c0",
+        "filename": "wmfdb/cli_admin/db_mysql.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 50,
+      "author": {
+        "id": 3215
+      },
+      "writtenOn": "2022-02-02T15:02:47Z",
+      "side": 1,
+      "message": "Seems unrelated / some leftover?",
+      "range": {
+        "startLine": 50,
+        "startChar": 40,
+        "endLine": 50,
+        "endChar": 46
+      },
+      "revId": "503890181c2845d9f422538ffa39367825b47c21",
+      "serverId": "e9e9afe9-4712-486d-8885-f54b72dd1951"
+    }
+  ]
+}
