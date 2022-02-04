@@ -1,0 +1,260 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "218f34e5_cd4bf851",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 3215
+      },
+      "writtenOn": "2022-02-04T09:32:06Z",
+      "side": 1,
+      "message": "Looks mostly fine, I think there are a couple of queries that don\u0027t use the safe parameter and some question inline.",
+      "revId": "ef1db2f7b7a38bf7a21c6e0288fbdbe0f92c3696",
+      "serverId": "e9e9afe9-4712-486d-8885-f54b72dd1951"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9008130e_de4f6b2c",
+        "filename": "wmfdb/cli_admin/db_compare.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 38,
+      "author": {
+        "id": 3215
+      },
+      "writtenOn": "2022-02-04T09:32:06Z",
+      "side": 1,
+      "message": "This log call might happen before logging is setup in run()",
+      "revId": "ef1db2f7b7a38bf7a21c6e0288fbdbe0f92c3696",
+      "serverId": "e9e9afe9-4712-486d-8885-f54b72dd1951"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4b70b89e_16fe77cf",
+        "filename": "wmfdb/cli_admin/db_compare.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 54,
+      "author": {
+        "id": 3215
+      },
+      "writtenOn": "2022-02-04T09:32:06Z",
+      "side": 1,
+      "message": "cit. from docs: \"Most systems require it to be in the range 0–127\"",
+      "revId": "ef1db2f7b7a38bf7a21c6e0288fbdbe0f92c3696",
+      "serverId": "e9e9afe9-4712-486d-8885-f54b72dd1951"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "bf75daf0_a9bd2aec",
+        "filename": "wmfdb/cli_admin/db_compare.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 57,
+      "author": {
+        "id": 3215
+      },
+      "writtenOn": "2022-02-04T09:32:06Z",
+      "side": 1,
+      "message": "you could use parser.error() that will make it behave like any other wrong parameter",
+      "revId": "ef1db2f7b7a38bf7a21c6e0288fbdbe0f92c3696",
+      "serverId": "e9e9afe9-4712-486d-8885-f54b72dd1951"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "dee2fe30_dc4073aa",
+        "filename": "wmfdb/cli_admin/db_compare.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 109,
+      "author": {
+        "id": 3215
+      },
+      "writtenOn": "2022-02-04T09:32:06Z",
+      "side": 1,
+      "message": "the level is WARNING, WARN is a deprecated alias (for both the level and the method AFAIK), see also https://docs.python.org/3/library/logging.html#logging-levels",
+      "range": {
+        "startLine": 109,
+        "startChar": 42,
+        "endLine": 109,
+        "endChar": 46
+      },
+      "revId": "ef1db2f7b7a38bf7a21c6e0288fbdbe0f92c3696",
+      "serverId": "e9e9afe9-4712-486d-8885-f54b72dd1951"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6f3b5eab_747659b9",
+        "filename": "wmfdb/cli_admin/db_compare.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 137,
+      "author": {
+        "id": 3215
+      },
+      "writtenOn": "2022-02-04T09:32:06Z",
+      "side": 1,
+      "message": "[optional] you could evaluate if it might be nicer to have this class as @dataclass. I see pro and cons.",
+      "revId": "ef1db2f7b7a38bf7a21c6e0288fbdbe0f92c3696",
+      "serverId": "e9e9afe9-4712-486d-8885-f54b72dd1951"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7f8bab86_9ad28f1f",
+        "filename": "wmfdb/cli_admin/db_compare.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 157,
+      "author": {
+        "id": 3215
+      },
+      "writtenOn": "2022-02-04T09:32:06Z",
+      "side": 1,
+      "message": "I think that usually is better to not sys.exit from within a class, if you ever want to use it as a library for example. Yes you can catch sys.exit too, but usually is nicer not to exit. YMMV of course.\n[totally optional] That said, one alternative option here could be to move this logic into a function (or subfuntion of build_parser) and use it as type for the --cnfs that will return a mycnf.CnfSelector instance that will be required by the Compare constructor.\n\nThe reason I\u0027m suggesting that as an option is that the Compare class will most likely fail without loading the appropriate configs, and so I was wondering if we should require that at the constructor level.",
+      "revId": "ef1db2f7b7a38bf7a21c6e0288fbdbe0f92c3696",
+      "serverId": "e9e9afe9-4712-486d-8885-f54b72dd1951"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "dd209891_dcb7a51d",
+        "filename": "wmfdb/cli_admin/db_compare.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 213,
+      "author": {
+        "id": 3215
+      },
+      "writtenOn": "2022-02-04T09:32:06Z",
+      "side": 1,
+      "message": "I\u0027m not sure to follow this logic. Here it seems that you want to use min_val if self._min_val is None or if the provided self._min_val is lower than the actual minum value.\nBut then in the line above you if-guard this only in the case that self._min_val is None, so when is set it will never reach this line. What am I missing?\nThat said, given that you do query with BETWEEN what is the drawback of using whatever min/max value was passed even if lower/greater of the actual min/max?",
+      "revId": "ef1db2f7b7a38bf7a21c6e0288fbdbe0f92c3696",
+      "serverId": "e9e9afe9-4712-486d-8885-f54b72dd1951"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "71c1811f_a05e61a6",
+        "filename": "wmfdb/cli_admin/db_compare.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 220,
+      "author": {
+        "id": 3215
+      },
+      "writtenOn": "2022-02-04T09:32:06Z",
+      "side": 1,
+      "message": "what are you trying to assert here with type?",
+      "range": {
+        "startLine": 220,
+        "startChar": 47,
+        "endLine": 220,
+        "endChar": 66
+      },
+      "revId": "ef1db2f7b7a38bf7a21c6e0288fbdbe0f92c3696",
+      "serverId": "e9e9afe9-4712-486d-8885-f54b72dd1951"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a9e2e078_bb7b70a1",
+        "filename": "wmfdb/cli_admin/db_compare.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 241,
+      "author": {
+        "id": 3215
+      },
+      "writtenOn": "2022-02-04T09:32:06Z",
+      "side": 1,
+      "message": "[important] If I\u0027m not mistaken this is open to SQL injection because not using the sql library safe parameters replacement method.",
+      "revId": "ef1db2f7b7a38bf7a21c6e0288fbdbe0f92c3696",
+      "serverId": "e9e9afe9-4712-486d-8885-f54b72dd1951"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "08be79d6_7cc664b9",
+        "filename": "wmfdb/cli_admin/db_compare.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 261,
+      "author": {
+        "id": 3215
+      },
+      "writtenOn": "2022-02-04T09:32:06Z",
+      "side": 1,
+      "message": "AFAICT you\u0027re getting the columns only from the first database. Wouldn\u0027t be more safe to get them from all connections and ensure they are the same?",
+      "revId": "ef1db2f7b7a38bf7a21c6e0288fbdbe0f92c3696",
+      "serverId": "e9e9afe9-4712-486d-8885-f54b72dd1951"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "856112c3_1dbe2631",
+        "filename": "wmfdb/cli_admin/db_compare.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 350,
+      "author": {
+        "id": 3215
+      },
+      "writtenOn": "2022-02-04T09:32:06Z",
+      "side": 1,
+      "message": "ditto for not using the library safe parameter replacement method",
+      "revId": "ef1db2f7b7a38bf7a21c6e0288fbdbe0f92c3696",
+      "serverId": "e9e9afe9-4712-486d-8885-f54b72dd1951"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "60279553_36fb3e94",
+        "filename": "wmfdb/cli_admin/db_compare.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 355,
+      "author": {
+        "id": 3215
+      },
+      "writtenOn": "2022-02-04T09:32:06Z",
+      "side": 1,
+      "message": "These type hints don\u0027t help much to understand what parameters the callable should accept and what to return, AFAICT",
+      "range": {
+        "startLine": 355,
+        "startChar": 28,
+        "endLine": 355,
+        "endChar": 49
+      },
+      "revId": "ef1db2f7b7a38bf7a21c6e0288fbdbe0f92c3696",
+      "serverId": "e9e9afe9-4712-486d-8885-f54b72dd1951"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b4adf4ec_35ebff65",
+        "filename": "wmfdb/cli_admin/db_compare.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 369,
+      "author": {
+        "id": 3215
+      },
+      "writtenOn": "2022-02-04T09:32:06Z",
+      "side": 1,
+      "message": "consider if a @dataclass would be more suitable, depending on your needs",
+      "revId": "ef1db2f7b7a38bf7a21c6e0288fbdbe0f92c3696",
+      "serverId": "e9e9afe9-4712-486d-8885-f54b72dd1951"
+    }
+  ]
+}
