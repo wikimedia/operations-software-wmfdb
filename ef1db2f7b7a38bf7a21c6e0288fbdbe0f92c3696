@@ -37,6 +37,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "00f2f635_1fa16980",
+        "filename": "wmfdb/cli_admin/db_compare.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 38,
+      "author": {
+        "id": 8161
+      },
+      "writtenOn": "2022-02-04T11:16:44Z",
+      "side": 1,
+      "message": "True in theory, but there isn\u0027t any place that this can happen currently (more-or-less by design). Also in the worst case it just means the formatting of the error is slightly different for a tiny proportion of possible errors, while looking correct for the rest.\n\nI don\u0027t see a way to improve this, in any case.",
+      "parentUuid": "9008130e_de4f6b2c",
+      "revId": "ef1db2f7b7a38bf7a21c6e0288fbdbe0f92c3696",
+      "serverId": "e9e9afe9-4712-486d-8885-f54b72dd1951"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "4b70b89e_16fe77cf",
         "filename": "wmfdb/cli_admin/db_compare.py",
         "patchSetId": 1
@@ -48,6 +66,24 @@
       "writtenOn": "2022-02-04T09:32:06Z",
       "side": 1,
       "message": "cit. from docs: \"Most systems require it to be in the range 0–127\"",
+      "revId": "ef1db2f7b7a38bf7a21c6e0288fbdbe0f92c3696",
+      "serverId": "e9e9afe9-4712-486d-8885-f54b72dd1951"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "9edc97d4_7879c4b0",
+        "filename": "wmfdb/cli_admin/db_compare.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 54,
+      "author": {
+        "id": 8161
+      },
+      "writtenOn": "2022-02-04T11:16:44Z",
+      "side": 1,
+      "message": "Alright, moving all error exitcodes to be 2.",
+      "parentUuid": "4b70b89e_16fe77cf",
       "revId": "ef1db2f7b7a38bf7a21c6e0288fbdbe0f92c3696",
       "serverId": "e9e9afe9-4712-486d-8885-f54b72dd1951"
     },
@@ -69,6 +105,24 @@
       "serverId": "e9e9afe9-4712-486d-8885-f54b72dd1951"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "6a8d42c5_b878bfea",
+        "filename": "wmfdb/cli_admin/db_compare.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 57,
+      "author": {
+        "id": 8161
+      },
+      "writtenOn": "2022-02-04T11:16:44Z",
+      "side": 1,
+      "message": "Ohh, that\u0027s excellent. Done!",
+      "parentUuid": "bf75daf0_a9bd2aec",
+      "revId": "ef1db2f7b7a38bf7a21c6e0288fbdbe0f92c3696",
+      "serverId": "e9e9afe9-4712-486d-8885-f54b72dd1951"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "dee2fe30_dc4073aa",
@@ -82,6 +136,30 @@
       "writtenOn": "2022-02-04T09:32:06Z",
       "side": 1,
       "message": "the level is WARNING, WARN is a deprecated alias (for both the level and the method AFAIK), see also https://docs.python.org/3/library/logging.html#logging-levels",
+      "range": {
+        "startLine": 109,
+        "startChar": 42,
+        "endLine": 109,
+        "endChar": 46
+      },
+      "revId": "ef1db2f7b7a38bf7a21c6e0288fbdbe0f92c3696",
+      "serverId": "e9e9afe9-4712-486d-8885-f54b72dd1951"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "b05bbb06_c47723b0",
+        "filename": "wmfdb/cli_admin/db_compare.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 109,
+      "author": {
+        "id": 8161
+      },
+      "writtenOn": "2022-02-04T11:16:44Z",
+      "side": 1,
+      "message": "Sigh, ack.",
+      "parentUuid": "dee2fe30_dc4073aa",
       "range": {
         "startLine": 109,
         "startChar": 42,
@@ -126,6 +204,24 @@
       "serverId": "e9e9afe9-4712-486d-8885-f54b72dd1951"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "11060ce7_882f9a2a",
+        "filename": "wmfdb/cli_admin/db_compare.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 157,
+      "author": {
+        "id": 8161
+      },
+      "writtenOn": "2022-02-04T11:16:44Z",
+      "side": 1,
+      "message": "This class is never meant to be used from outside this utility. I\u0027ve renamed it to _Compare to make that slightly more clear. It\u0027s written to be very shallow (i.e. few method-\u003emethod calls, main driving logic is external), to allow for easy test-ability. I was originally loading the cnfs in the constructor, but that made testing very painful.\n\nI had a look at the possible errors from cnfsel.load_cfgs, and it looks like everything is properly wrapped, so we can just let the catch in main() handle it. I\u0027ve moved the error-reporting for no files loaded to run().",
+      "parentUuid": "7f8bab86_9ad28f1f",
+      "revId": "ef1db2f7b7a38bf7a21c6e0288fbdbe0f92c3696",
+      "serverId": "e9e9afe9-4712-486d-8885-f54b72dd1951"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "dd209891_dcb7a51d",
@@ -139,6 +235,24 @@
       "writtenOn": "2022-02-04T09:32:06Z",
       "side": 1,
       "message": "I\u0027m not sure to follow this logic. Here it seems that you want to use min_val if self._min_val is None or if the provided self._min_val is lower than the actual minum value.\nBut then in the line above you if-guard this only in the case that self._min_val is None, so when is set it will never reach this line. What am I missing?\nThat said, given that you do query with BETWEEN what is the drawback of using whatever min/max value was passed even if lower/greater of the actual min/max?",
+      "revId": "ef1db2f7b7a38bf7a21c6e0288fbdbe0f92c3696",
+      "serverId": "e9e9afe9-4712-486d-8885-f54b72dd1951"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4085cd13_72c9a4d3",
+        "filename": "wmfdb/cli_admin/db_compare.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 213,
+      "author": {
+        "id": 8161
+      },
+      "writtenOn": "2022-02-04T11:16:44Z",
+      "side": 1,
+      "message": "Maybe this will make things clearer:\n\n```\nif not use_min_arg:\n  # only reach here if a min arg was not supplied.\n  if self._min_val is None or self._min_val \u003e min_val:\n    # if either no min_val has been set yet, or the existing one is already higher than the new value, update to the new value.\n```\n\n\u003e That said, given that you do query with BETWEEN what is the drawback of using whatever min/max value was passed even if lower/greater of the actual min/max?\n\nIf a min/max value was passed in on the cmdline, then they are used, and all values queried from the dbs are discarded. But as the docstring says, we check the actual min/max values in the tables regardless, to ensure things are ok.",
+      "parentUuid": "dd209891_dcb7a51d",
       "revId": "ef1db2f7b7a38bf7a21c6e0288fbdbe0f92c3696",
       "serverId": "e9e9afe9-4712-486d-8885-f54b72dd1951"
     },
@@ -183,6 +297,24 @@
       "serverId": "e9e9afe9-4712-486d-8885-f54b72dd1951"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "64802393_e1ae877c",
+        "filename": "wmfdb/cli_admin/db_compare.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 241,
+      "author": {
+        "id": 8161
+      },
+      "writtenOn": "2022-02-04T11:16:44Z",
+      "side": 1,
+      "message": "Safe parameter replacement is only for _values_. E.g. as it is this will do `... from tablename`. If i use %s, i\u0027ll get `... from \u0027tablename\u0027` (i.e. tablename gets wrapped in single-quotes), which is an sql syntax error.",
+      "parentUuid": "a9e2e078_bb7b70a1",
+      "revId": "ef1db2f7b7a38bf7a21c6e0288fbdbe0f92c3696",
+      "serverId": "e9e9afe9-4712-486d-8885-f54b72dd1951"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "08be79d6_7cc664b9",
@@ -217,6 +349,24 @@
       "serverId": "e9e9afe9-4712-486d-8885-f54b72dd1951"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "fa5e8170_3331c8eb",
+        "filename": "wmfdb/cli_admin/db_compare.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 350,
+      "author": {
+        "id": 8161
+      },
+      "writtenOn": "2022-02-04T11:16:44Z",
+      "side": 1,
+      "message": "Denied.\n\nThe two places that values are used are using it: \"BETWEEN %s AND %s\"",
+      "parentUuid": "856112c3_1dbe2631",
+      "revId": "ef1db2f7b7a38bf7a21c6e0288fbdbe0f92c3696",
+      "serverId": "e9e9afe9-4712-486d-8885-f54b72dd1951"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "60279553_36fb3e94",
@@ -242,6 +392,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "561a2671_021ca32d",
+        "filename": "wmfdb/cli_admin/db_compare.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 355,
+      "author": {
+        "id": 8161
+      },
+      "writtenOn": "2022-02-04T11:16:44Z",
+      "side": 1,
+      "message": "It says that you get a function that takes a parameter of type T1, and returns a type T2. Values is a list of T1, and _run_parallel returns a list of T2. Is there something i can do to make it clearer?",
+      "parentUuid": "60279553_36fb3e94",
+      "range": {
+        "startLine": 355,
+        "startChar": 28,
+        "endLine": 355,
+        "endChar": 49
+      },
+      "revId": "ef1db2f7b7a38bf7a21c6e0288fbdbe0f92c3696",
+      "serverId": "e9e9afe9-4712-486d-8885-f54b72dd1951"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "b4adf4ec_35ebff65",
         "filename": "wmfdb/cli_admin/db_compare.py",
         "patchSetId": 1
@@ -253,6 +427,24 @@
       "writtenOn": "2022-02-04T09:32:06Z",
       "side": 1,
       "message": "consider if a @dataclass would be more suitable, depending on your needs",
+      "revId": "ef1db2f7b7a38bf7a21c6e0288fbdbe0f92c3696",
+      "serverId": "e9e9afe9-4712-486d-8885-f54b72dd1951"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "24fe4698_87c76c6d",
+        "filename": "wmfdb/cli_admin/db_compare.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 369,
+      "author": {
+        "id": 8161
+      },
+      "writtenOn": "2022-02-04T11:16:44Z",
+      "side": 1,
+      "message": "That would require understanding the implications of @dataclass, so i\u0027ve decided not to consider it for the moment ;)",
+      "parentUuid": "b4adf4ec_35ebff65",
       "revId": "ef1db2f7b7a38bf7a21c6e0288fbdbe0f92c3696",
       "serverId": "e9e9afe9-4712-486d-8885-f54b72dd1951"
     }
