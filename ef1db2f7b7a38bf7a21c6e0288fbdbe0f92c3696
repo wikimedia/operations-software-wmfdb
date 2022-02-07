@@ -53,6 +53,24 @@
       "serverId": "e9e9afe9-4712-486d-8885-f54b72dd1951"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "1767f70a_e1fff42a",
+        "filename": "wmfdb/cli_admin/db_compare.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 38,
+      "author": {
+        "id": 3215
+      },
+      "writtenOn": "2022-02-07T14:56:11Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "00f2f635_1fa16980",
+      "revId": "ef1db2f7b7a38bf7a21c6e0288fbdbe0f92c3696",
+      "serverId": "e9e9afe9-4712-486d-8885-f54b72dd1951"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "4b70b89e_16fe77cf",
@@ -257,6 +275,24 @@
       "serverId": "e9e9afe9-4712-486d-8885-f54b72dd1951"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "7bb4666d_3ebd5831",
+        "filename": "wmfdb/cli_admin/db_compare.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 213,
+      "author": {
+        "id": 3215
+      },
+      "writtenOn": "2022-02-07T14:56:11Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "4085cd13_72c9a4d3",
+      "revId": "ef1db2f7b7a38bf7a21c6e0288fbdbe0f92c3696",
+      "serverId": "e9e9afe9-4712-486d-8885-f54b72dd1951"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "71c1811f_a05e61a6",
@@ -304,6 +340,30 @@
       "serverId": "e9e9afe9-4712-486d-8885-f54b72dd1951"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "196abdc7_d61d3dcf",
+        "filename": "wmfdb/cli_admin/db_compare.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 220,
+      "author": {
+        "id": 3215
+      },
+      "writtenOn": "2022-02-07T14:56:11Z",
+      "side": 1,
+      "message": "Ignore me, I misread it.",
+      "parentUuid": "e2e9f822_f6dcf427",
+      "range": {
+        "startLine": 220,
+        "startChar": 47,
+        "endLine": 220,
+        "endChar": 66
+      },
+      "revId": "ef1db2f7b7a38bf7a21c6e0288fbdbe0f92c3696",
+      "serverId": "e9e9afe9-4712-486d-8885-f54b72dd1951"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "a9e2e078_bb7b70a1",
@@ -335,6 +395,24 @@
       "side": 1,
       "message": "Safe parameter replacement is only for _values_. E.g. as it is this will do `... from tablename`. If i use %s, i\u0027ll get `... from \u0027tablename\u0027` (i.e. tablename gets wrapped in single-quotes), which is an sql syntax error.",
       "parentUuid": "a9e2e078_bb7b70a1",
+      "revId": "ef1db2f7b7a38bf7a21c6e0288fbdbe0f92c3696",
+      "serverId": "e9e9afe9-4712-486d-8885-f54b72dd1951"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "19ffc026_4bfc41a4",
+        "filename": "wmfdb/cli_admin/db_compare.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 241,
+      "author": {
+        "id": 3215
+      },
+      "writtenOn": "2022-02-07T14:56:11Z",
+      "side": 1,
+      "message": "I see, the mysql library doesn\u0027t provide any way to pass a dynamic column name while preventing sql-injection?\nIf not you could at least add some safety checks like ensuring that column and table names don\u0027t have backticks (`) and then doing MIN(`{self._col`) and FROM `self._table`.\n\nUsing backticks throughout will also give you the most future proof flexibility because the allowed list of chars in mysql column/table names is different from quoted and unquoted names. So without backtick quotes the tool cannot be used with names that use the extended allowed chars.\n\nRelated docs: https://mariadb.com/kb/en/identifier-names/#unquoted",
+      "parentUuid": "64802393_e1ae877c",
       "revId": "ef1db2f7b7a38bf7a21c6e0288fbdbe0f92c3696",
       "serverId": "e9e9afe9-4712-486d-8885-f54b72dd1951"
     },
@@ -474,6 +552,30 @@
       "serverId": "e9e9afe9-4712-486d-8885-f54b72dd1951"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "9bc762fe_29363c59",
+        "filename": "wmfdb/cli_admin/db_compare.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 355,
+      "author": {
+        "id": 3215
+      },
+      "writtenOn": "2022-02-07T14:56:11Z",
+      "side": 1,
+      "message": "Sure, that was clear, but I guess doesn\u0027t say how it should be used, but being private no big deal.",
+      "parentUuid": "561a2671_021ca32d",
+      "range": {
+        "startLine": 355,
+        "startChar": 28,
+        "endLine": 355,
+        "endChar": 49
+      },
+      "revId": "ef1db2f7b7a38bf7a21c6e0288fbdbe0f92c3696",
+      "serverId": "e9e9afe9-4712-486d-8885-f54b72dd1951"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "b4adf4ec_35ebff65",
@@ -505,6 +607,24 @@
       "side": 1,
       "message": "That would require understanding the implications of @dataclass, so i\u0027ve decided not to consider it for the moment ;)",
       "parentUuid": "b4adf4ec_35ebff65",
+      "revId": "ef1db2f7b7a38bf7a21c6e0288fbdbe0f92c3696",
+      "serverId": "e9e9afe9-4712-486d-8885-f54b72dd1951"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "79ea4aba_360ddfce",
+        "filename": "wmfdb/cli_admin/db_compare.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 369,
+      "author": {
+        "id": 3215
+      },
+      "writtenOn": "2022-02-07T14:56:11Z",
+      "side": 1,
+      "message": "🤦",
+      "parentUuid": "24fe4698_87c76c6d",
       "revId": "ef1db2f7b7a38bf7a21c6e0288fbdbe0f92c3696",
       "serverId": "e9e9afe9-4712-486d-8885-f54b72dd1951"
     }

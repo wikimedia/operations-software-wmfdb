@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "4f0edcf5_b44f23a2",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 3215
+      },
+      "writtenOn": "2022-02-07T14:56:11Z",
+      "side": 1,
+      "message": "Replies inline, IMHO I think the potential sql-injection should still be addressed.",
+      "revId": "48cd5400905e973dce3f21a928bb9f2643dd5282",
+      "serverId": "e9e9afe9-4712-486d-8885-f54b72dd1951"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f5cb9cff_fe74d6ef",
+        "filename": "wmfdb/cli_admin/db_compare.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 60,
+      "author": {
+        "id": 3215
+      },
+      "writtenOn": "2022-02-07T14:56:11Z",
+      "side": 1,
+      "message": "This line will never be reached, parser.error() will do it for you ;)\nhttps://docs.python.org/3/library/argparse.html#argparse.ArgumentParser.error",
+      "revId": "48cd5400905e973dce3f21a928bb9f2643dd5282",
+      "serverId": "e9e9afe9-4712-486d-8885-f54b72dd1951"
+    }
+  ]
+}
