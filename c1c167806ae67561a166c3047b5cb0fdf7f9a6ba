@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "e4bc7207_325e4e07",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 3215
+      },
+      "writtenOn": "2022-02-08T14:23:16Z",
+      "side": 1,
+      "message": "LGTM with the proposed follow ups.",
+      "revId": "c1c167806ae67561a166c3047b5cb0fdf7f9a6ba",
+      "serverId": "e9e9afe9-4712-486d-8885-f54b72dd1951"
+    }
+  ]
+}
