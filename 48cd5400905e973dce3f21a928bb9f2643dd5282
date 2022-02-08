@@ -33,6 +33,24 @@
       "message": "This line will never be reached, parser.error() will do it for you ;)\nhttps://docs.python.org/3/library/argparse.html#argparse.ArgumentParser.error",
       "revId": "48cd5400905e973dce3f21a928bb9f2643dd5282",
       "serverId": "e9e9afe9-4712-486d-8885-f54b72dd1951"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "ca248a4b_bf02fb2f",
+        "filename": "wmfdb/cli_admin/db_compare.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 60,
+      "author": {
+        "id": 8161
+      },
+      "writtenOn": "2022-02-08T14:13:43Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "f5cb9cff_fe74d6ef",
+      "revId": "48cd5400905e973dce3f21a928bb9f2643dd5282",
+      "serverId": "e9e9afe9-4712-486d-8885-f54b72dd1951"
     }
   ]
 }

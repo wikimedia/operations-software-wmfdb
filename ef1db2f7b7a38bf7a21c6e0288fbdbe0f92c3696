@@ -417,6 +417,24 @@
       "serverId": "e9e9afe9-4712-486d-8885-f54b72dd1951"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "233113ba_670577f8",
+        "filename": "wmfdb/cli_admin/db_compare.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 241,
+      "author": {
+        "id": 8161
+      },
+      "writtenOn": "2022-02-08T14:13:43Z",
+      "side": 1,
+      "message": "I\u0027ll add some validation of the db/table/column names in a follow-up. And backticks. Alllll the backticks.",
+      "parentUuid": "19ffc026_4bfc41a4",
+      "revId": "ef1db2f7b7a38bf7a21c6e0288fbdbe0f92c3696",
+      "serverId": "e9e9afe9-4712-486d-8885-f54b72dd1951"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "08be79d6_7cc664b9",
