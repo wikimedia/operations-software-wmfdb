@@ -7,7 +7,7 @@ with open("README.md", "r") as fh:
 setup(
     name="wmfdb",
     description="wmfdb",
-    version="0.1.2",
+    version="0.1.3",
     long_description=long_description,
     long_description_content_type="text/markdown",
     url="https://gerrit.wikimedia.org/r/admin/repos/operations%2Fsoftware%2Fwmfdb",
