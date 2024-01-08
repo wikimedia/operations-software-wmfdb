@@ -3,7 +3,7 @@ import argparse
 from typing import List, Optional
 
 CMD = "mysql"
-DEF_CA = "/etc/ssl/certs/Puppet_Internal_CA.pem"
+DEF_CA = "/etc/ssl/certs/wmf-ca-certificates.crt"
 
 
 class _HelpFormatter(
