@@ -1,3 +1,6 @@
+---
+include:
+  - https://gitlab.wikimedia.org/repos/sre/wmf-debci/raw/main/builddebs.yml
 stages:
   - test
 test:
