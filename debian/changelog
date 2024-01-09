@@ -1,4 +1,4 @@
-wmfdb (0.1.4) bullseye-wikimedia; urgency=medium
+wmfdb (0.1.4~wmf1) bullseye-wikimedia; urgency=medium
 
   * Update ssl ca-certificate
   * Update copyright
