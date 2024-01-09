@@ -1,9 +1,9 @@
 Format: https://www.debian.org/doc/packaging-manuals/copyright-format/1.0/
 Upstream-Name: wmfdb
-Source: https://gerrit.wikimedia.org/r/admin/repos/operations%2Fsoftware%2Fwmfdb
+Source: https://gitlab.wikimedia.org/repos/sre/wmfdb
 
 Files: *
-Copyright: 2021 Wikimedia Foundation, Inc.
+Copyright: 2024 Wikimedia Foundation, Inc.
 License: Apache-2.0
 
 License: Apache-2.0

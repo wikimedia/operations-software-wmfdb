@@ -1,3 +1,19 @@
+wmfdb (0.1.4~wmf1) bullseye-wikimedia; urgency=medium
+
+  * Update ssl ca-certificate
+  * Update copyright
+  * Update source repo references
+
+ -- Arnaud Bran <abran@wikimedia.org>  Mon, 08 Jan 2024 17:10:00 +0200
+
+wmfdb (0.1.4) bookworm-wikimedia; urgency=medium
+
+  * Update ssl ca-certificate
+  * Update copyright
+  * Update source repo references
+
+ -- Arnaud Bran <abran@wikimedia.org>  Mon, 08 Jan 2024 16:51:54 +0200
+
 wmfdb (0.1.3) bullseye-wikimedia; urgency=medium
 
   * Update zarcillo host
