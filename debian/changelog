@@ -1,4 +1,4 @@
-wmfdb (0.1.5~wmf5) bullseye-wikimedia; urgency=medium
+wmfdb (0.1.5~wmf1) bullseye-wikimedia; urgency=medium
 
   * Set the correct mysql prefs for an-redacteddb hosts
 
