@@ -360,16 +360,17 @@ class TestCnf:
 class TestCnfSelector:
     @pytest.fixture(autouse=True)
     def mock_cnf(self, mocker: MockerFixture) -> None:
+        # Keep a reference to the original class so we can use it in the factory.
+        self._m_cnf_orig = mycnf.Cnf
         self.m_cnf = mocker.patch("wmfdb.mycnf.Cnf", side_effect=self.mock_cnf_factory)
         self.mock_cnfs: List[Any] = []
 
     def mock_cnf_factory(self, *args: Any, **kwargs: Any) -> Any:
-        m = create_autospec(mycnf.Cnf, spec_set=True)(*args, **kwargs)
+        m = create_autospec(self._m_cnf_orig, spec_set=True)(*args, **kwargs)
         self.mock_cnfs.append(m)
         return m
 
     def test_init_defaults(self) -> None:
-        self.m_cnf.return_value
         cs = mycnf.CnfSelector()
         assert self.m_cnf.call_args_list == [
             call(mycnf.DEF_SECTION_LIST),
