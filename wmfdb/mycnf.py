@@ -58,23 +58,22 @@ class Cnf:
         kwargs["allow_no_value"] = True
         kwargs["default_section"] = None
         self._parser = configparser.ConfigParser(**kwargs)
-        # Workaround for https://github.com/python/mypy/issues/2427
-        setattr(self._parser, "optionxform", self._normalize_keys)
+        self._parser.optionxform = self._normalize_keys  # type: ignore[method-assign]
 
     @staticmethod
-    def _normalize_keys(key: str) -> str:
+    def _normalize_keys(optionstr: str) -> str:
         """Normalize my.cnf keys.
 
         Mysql/mariadb will allow options to appear as a-b-c or a_b_c,
         or even a_b-c :(
 
         Args:
-            key (str): Key to normalize.
+            optionstr (str): Key to normalize.
 
         Returns:
             str: Normalized key.
         """
-        return key.replace("-", "_")
+        return optionstr.replace("-", "_")
 
     def load_cfgs(self, paths: Iterable[Path] = DEF_CFG_LIST) -> int:
         """Load my.cnf files in order.

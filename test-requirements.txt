@@ -1,5 +1,7 @@
 coverage
 flake8
+flake8-bugbear
+flake8-warnings
 pip>=20.1b1
 pytest
 pytest-cov

@@ -354,7 +354,7 @@ class TestCnf:
         c.load_cfgs([FIXTURES_BASE / "base.cnf"])
         kwargs = c.pymysql_conn_args(host="db9999")
         assert "unix_socket" not in kwargs
-        kwargs["port"] == 3999
+        assert kwargs["port"] == 3999
 
 
 class TestCnfSelector:
@@ -419,7 +419,7 @@ class TestCnfSelector:
     def test_pymsql_conn_args(self, mocker: MockerFixture) -> None:
         cs = mycnf.CnfSelector()
         cnf = self.mock_cnfs[0]
-        setattr(cs, "get_cnf", mocker.MagicMock(return_value=cnf))
+        mocker.patch.object(cs, "get_cnf", mocker.MagicMock(return_value=cnf))
         cs.pymysql_conn_args(host="db9999", arg1="arg1a")
         cs.get_cnf.assert_called_once_with("db9999")  # type: ignore
         cnf.pymysql_conn_args.assert_called_once_with(host="db9999", arg1="arg1a")
