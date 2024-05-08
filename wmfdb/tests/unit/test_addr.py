@@ -30,7 +30,7 @@ def test_resolve_host(mocker: MockerFixture) -> None:
 
 
 @pytest.mark.parametrize(
-    "ip, host",
+    ("ip", "host"),
     [
         ("127.0.0.1", "localhost"),
         ("::1", "localhost"),
@@ -52,7 +52,7 @@ def test__resolve_ip_error(mocker: MockerFixture) -> None:
 
 
 @pytest.mark.parametrize(
-    "host,expected",
+    ("host", "expected"),
     [
         ("host1102", "host1102.eqiad.wmnet"),
         ("h6003", "h6003.drmrs.wmnet"),
@@ -74,7 +74,7 @@ def test_dc_map_bad_dcid() -> None:
 
 
 @pytest.mark.parametrize(
-    "addr_, host, port",
+    ("addr_", "host", "port"),
     [
         ("2001:db8::11", "2001:db8::11", 3306),
         ("[2001:db8::11]", "2001:db8::11", 3306),

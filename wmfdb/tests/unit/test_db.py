@@ -11,7 +11,7 @@ from wmfdb.exceptions import WmfdbDBError, WmfdbValueError
 
 class TestDB:
     @pytest.fixture(autouse=True)
-    def mock_conn(self, mocker: MockerFixture) -> None:
+    def _mock_conn(self, mocker: MockerFixture) -> None:
         self.m_conn = mocker.patch("wmfdb.db.Connection", autospec=True, spec_set=True)
 
     @pytest.fixture
@@ -163,7 +163,7 @@ class TestDB:
         assert d.host() == "db9999"
 
     @pytest.mark.parametrize(
-        "args,expected",
+        ("args", "expected"),
         [
             ({"unix_socket": "/run/mysql.sock"}, "host1:/run/mysql.sock"),
             ({}, "host1"),
@@ -178,7 +178,7 @@ class TestDB:
         assert d.addr() == expected
 
     @pytest.mark.parametrize(
-        "args,expected",
+        ("args", "expected"),
         [
             ({}, "addr1[(none)]"),
             ({"database": "test1"}, "addr1[test1]"),
@@ -196,7 +196,7 @@ class TestDB:
 
 class TestCursorWrapper:
     @pytest.fixture(autouse=True)
-    def mock_cur(self, mocker: MockerFixture) -> None:
+    def _mock_cur(self, mocker: MockerFixture) -> None:
         self.m_cur = mocker.create_autospec(CursorForTest, spec_set=True)
 
     def _mock_add_timeout(self, c: db.CursorWrapper[Any], mocker: MockerFixture) -> Any:
@@ -281,7 +281,7 @@ class TestCursorWrapper:
         )
 
     @pytest.mark.parametrize(
-        "def_tout,tout,exp_tout",
+        ("def_tout", "tout", "exp_tout"),
         [
             (None, None, None),
             (5.5, None, 5.5),

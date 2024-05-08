@@ -8,11 +8,11 @@ from wmfdb.exceptions import WmfdbIOError, WmfdbValueError
 
 
 @pytest.fixture
-def set_test_data_env(monkeypatch: pytest.MonkeyPatch) -> None:
+def _set_test_data_env(monkeypatch: pytest.MonkeyPatch) -> None:
     monkeypatch.setenv(section.TEST_DATA_ENV, "y")
 
 
-@pytest.mark.usefixtures("set_test_data_env")
+@pytest.mark.usefixtures("_set_test_data_env")
 class TestSectionMap:
     def _check_cfg_loaded(self, sm: section.SectionMap) -> None:
         num_sections = len(section.TEST_DATA)
@@ -139,7 +139,7 @@ class TestSectionMap:
         assert 10113 in ports
 
     @pytest.mark.parametrize(
-        "name,exp_port",
+        ("name", "exp_port"),
         [
             (section.DEFAULT_SECTION, section.DEFAULT_PORT),
             ("f2", 10112),
@@ -157,7 +157,7 @@ class TestSectionMap:
             sm.by_name("abcd")
 
     @pytest.mark.parametrize(
-        "port, exp_name",
+        ("port", "exp_name"),
         [
             (section.DEFAULT_PORT, section.DEFAULT_SECTION),
             (10112, "f2"),
@@ -198,7 +198,7 @@ class TestSection:
             section.Section(name="abcd", port=3306)
 
     @pytest.mark.parametrize(
-        "name,port,expected",
+        ("name", "port", "expected"),
         [
             (section.DEFAULT_SECTION, section.DEFAULT_PORT, "/run/mysqld/mysqld.sock"),
             ("abcd", 1234, "/run/mysqld/mysqld.abcd.sock"),
@@ -209,7 +209,7 @@ class TestSection:
         assert s.socket_path() == Path(expected)
 
     @pytest.mark.parametrize(
-        "name,port,expected",
+        ("name", "port", "expected"),
         [
             (section.DEFAULT_SECTION, section.DEFAULT_PORT, "/srv/sqldata"),
             ("abcd", 1234, "/srv/sqldata.abcd"),
@@ -220,7 +220,7 @@ class TestSection:
         assert s.datadir() == Path(expected)
 
     @pytest.mark.parametrize(
-        "name,port,expected",
+        ("name", "port", "expected"),
         [
             (section.DEFAULT_SECTION, section.DEFAULT_PORT, section.DEFAULT_PROM_PORT),
             ("abcd", 3321, 13321),

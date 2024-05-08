@@ -45,7 +45,7 @@ class TestCnf:
         assert c._parser.optionxform == c._normalize_keys
 
     @pytest.mark.parametrize(
-        "key,expected",
+        ("key", "expected"),
         [
             ("asdf", "asdf"),
             ("foo-bar", "foo_bar"),
@@ -151,7 +151,7 @@ class TestCnf:
         m.assert_called_once_with("foo#bar")
 
     @pytest.mark.parametrize(
-        "val,expected",
+        ("val", "expected"),
         [
             # For readability,
             # Input values are wrapped in +'s
@@ -176,15 +176,19 @@ class TestCnf:
         ],
     )
     def test__cleaup_value_quotes(self, val: str, expected: str) -> None:
-        assert val[0] == "+" and val[-1] == "+", "val is wrapped incorrectly"
-        assert expected[0] == "*" and expected[-1] == "*", "expected is wrapped incorrectly"
+        assert len(val) > 1, "val is too short"
+        assert len(expected) > 1, "expected is too short"
+        assert val[0] == "+" and val[-1] == "+", "val is wrapped incorrectly"  # noqa: PT018
+        assert (  # noqa: PT018
+            expected[0] == "*" and expected[-1] == "*"
+        ), "expected is wrapped incorrectly"
         val = val.strip("+")
         expected = expected.strip("*")
         c = mycnf.Cnf()
         assert c._cleanup_value(val) == expected
 
     @pytest.mark.parametrize(
-        "val,expected",
+        ("val", "expected"),
         [
             ("", ""),
             ("'", "'"),
@@ -263,7 +267,7 @@ class TestCnf:
             c.get_float("test_key")
 
     @pytest.mark.parametrize(
-        "val,expected",
+        ("val", "expected"),
         [
             ("TRUE", True),
             ("True", True),
@@ -373,7 +377,7 @@ class TestCnf:
 
 class TestCnfSelector:
     @pytest.fixture(autouse=True)
-    def mock_cnf(self, mocker: MockerFixture) -> None:
+    def _mock_cnf(self, mocker: MockerFixture) -> None:
         # Keep a reference to the original class so we can use it in the factory.
         self._m_cnf_orig = mycnf.Cnf
         self.mock_cnfs: List[Any] = []

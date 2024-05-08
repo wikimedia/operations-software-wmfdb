@@ -6,7 +6,7 @@ import wmfdb.mysql_cli as mysql_cli
 
 
 @pytest.mark.parametrize(
-    "host,port,skip_ssl,rest",
+    ("host", "port", "skip_ssl", "rest"),
     [
         ("db2099", 3306, False, []),
         ("db2099", 10111, True, ["arg1", "--arg2"]),
@@ -28,7 +28,7 @@ def test_build_args(host: str, port: int, skip_ssl: bool, rest: List[str]) -> No
 
 
 @pytest.mark.parametrize(
-    "ca,out_args",
+    ("ca", "out_args"),
     [
         (
             None,
