@@ -28,15 +28,23 @@ class TestSectionMap:
         self._check_cfg_loaded(sm)
 
     def test_init_load(self, mocker: MockerFixture) -> None:
-        m_get_cfg = mocker.patch("wmfdb.section.SectionMap._get_cfg_file")
-        m_parse_cfg = mocker.patch("wmfdb.section.SectionMap._parse_cfg")
-        section.SectionMap()
+        m_get_cfg = mocker.patch(
+            "wmfdb.section.SectionMap._get_cfg_file", autospec=True, spec_set=True
+        )
+        m_parse_cfg = mocker.patch(
+            "wmfdb.section.SectionMap._parse_cfg", autospec=True, spec_set=True
+        )
+        sm = section.SectionMap()
         m_get_cfg.assert_called_once()
-        m_parse_cfg.assert_called_once_with(m_get_cfg.return_value)
+        m_parse_cfg.assert_called_once_with(sm, m_get_cfg.return_value)
 
     def test_init_dont_load(self, mocker: MockerFixture) -> None:
-        m_get_cfg = mocker.patch("wmfdb.section.SectionMap._get_cfg_file")
-        m_parse_cfg = mocker.patch("wmfdb.section.SectionMap._parse_cfg")
+        m_get_cfg = mocker.patch(
+            "wmfdb.section.SectionMap._get_cfg_file", autospec=True, spec_set=True
+        )
+        m_parse_cfg = mocker.patch(
+            "wmfdb.section.SectionMap._parse_cfg", autospec=True, spec_set=True
+        )
         sm = section.SectionMap(_load_cfg=False)
         assert len(sm._section) == 0
         assert len(sm._port) == 0
@@ -49,7 +57,7 @@ class TestSectionMap:
         # Unset the env var so this test is hermetic.
         monkeypatch.delenv(section.TEST_DATA_ENV, raising=False)
         sm = section.SectionMap(_load_cfg=False)
-        m = mocker.patch("builtins.open", mocker.mock_open())
+        m = mocker.patch("builtins.open", mocker.mock_open(), spec_set=True)
         sm._get_cfg_file(None)
         m.assert_called_once_with(section.DEFAULT_CFG_PATH, mode="r", newline="")
 
@@ -93,7 +101,7 @@ class TestSectionMap:
 
     def test_get_cfg_file_test_data(self, mocker: MockerFixture) -> None:
         sm = section.SectionMap(_load_cfg=False)
-        m = mocker.patch("builtins.open", mocker.mock_open())
+        m = mocker.patch("builtins.open", mocker.mock_open(), spec_set=True)
         lines = sm._get_cfg_file(None)
         m.assert_not_called()
         assert lines[0] == section.TEST_DATA[0]

@@ -11,8 +11,8 @@ from wmfdb.section import SectionMap
 
 def test_resolve_ip(mocker: MockerFixture) -> None:
     ip_str = "127.0.0.1"
-    dc_mock = mocker.patch("wmfdb.addr._dc_map")
-    res_ip_mock = mocker.patch("wmfdb.addr._resolve_ip")
+    dc_mock = mocker.patch("wmfdb.addr._dc_map", autospec=True, spec_set=True)
+    res_ip_mock = mocker.patch("wmfdb.addr._resolve_ip", autospec=True, spec_set=True)
     ret = addr.resolve(ip_str)
     dc_mock.assert_not_called()
     res_ip_mock.assert_called_once_with(ipaddress.ip_address(ip_str))
@@ -21,8 +21,8 @@ def test_resolve_ip(mocker: MockerFixture) -> None:
 
 def test_resolve_host(mocker: MockerFixture) -> None:
     host = "localhost"
-    dc_mock = mocker.patch("wmfdb.addr._dc_map")
-    res_ip_mock = mocker.patch("wmfdb.addr._resolve_ip")
+    dc_mock = mocker.patch("wmfdb.addr._dc_map", autospec=True, spec_set=True)
+    res_ip_mock = mocker.patch("wmfdb.addr._resolve_ip", autospec=True, spec_set=True)
     ret = addr.resolve(host)
     assert ret == dc_mock.return_value
     dc_mock.assert_called_once_with(host)
@@ -39,13 +39,13 @@ def test_resolve_host(mocker: MockerFixture) -> None:
     ],
 )
 def test__resolve_ip(mocker: MockerFixture, ip: str, host: str) -> None:
-    m = mocker.patch("wmfdb.addr.socket.gethostbyaddr")
+    m = mocker.patch("wmfdb.addr.socket.gethostbyaddr", autospec=True, spec_set=True)
     m.side_effect = lambda ip: ("host-%s" % ip, None, None)
     assert addr._resolve_ip(ipaddress.ip_address(ip)) == host
 
 
 def test__resolve_ip_error(mocker: MockerFixture) -> None:
-    m = mocker.patch("wmfdb.addr.socket.gethostbyaddr")
+    m = mocker.patch("wmfdb.addr.socket.gethostbyaddr", autospec=True, spec_set=True)
     m.side_effect = socket.herror()
     with pytest.raises(WmfdbValueError, match="Unable to resolve"):
         addr._resolve_ip(ipaddress.ip_address("192.168.1.1"))
@@ -63,7 +63,7 @@ def test_dc_map(host: str, expected: str) -> None:
 
 
 def test_dc_map_no_dcid(mocker: MockerFixture) -> None:
-    m = mocker.patch("wmfdb.addr.socket.getfqdn")
+    m = mocker.patch("wmfdb.addr.socket.getfqdn", autospec=True, spec_set=True)
     assert addr._dc_map("host333") == m.return_value
     m.assert_called_once_with("host333")
 

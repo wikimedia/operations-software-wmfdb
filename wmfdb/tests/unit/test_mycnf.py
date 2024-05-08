@@ -1,10 +1,10 @@
 import re
 from pathlib import Path
 from typing import Any, List
-from unittest.mock import call, create_autospec
+from unittest.mock import call
 
 import pytest
-from pytest_mock import MockerFixture
+from pytest_mock import MockerFixture, MockType
 
 from wmfdb import mycnf
 from wmfdb.exceptions import WmfdbIOError, WmfdbValueError
@@ -14,8 +14,11 @@ FIXTURES_BASE = get_fixture_path("mycnf")
 
 
 class TestCnf:
+    def _mock_get(self, c: mycnf.Cnf, mocker: MockerFixture) -> MockType:
+        return mocker.patch.object(c, "_get", autospec=True, spec_set=True)
+
     def test_init_defaults(self, mocker: MockerFixture) -> None:
-        m = mocker.patch("wmfdb.mycnf.configparser.ConfigParser")
+        m = mocker.patch("wmfdb.mycnf.configparser.ConfigParser", autospec=True, spec_set=True)
         c = mycnf.Cnf()
         assert c._section_order == mycnf.DEF_SECTION_LIST
         assert c._parser == m.return_value
@@ -23,12 +26,21 @@ class TestCnf:
         assert c._parser.optionxform == c._normalize_keys
 
     def test_init_custom(self, mocker: MockerFixture) -> None:
-        m = mocker.patch("wmfdb.mycnf.configparser.ConfigParser")
-        c = mycnf.Cnf(["clientlabsdb", "client"], arg1="1", arg2="22", allow_no_value=False)
+        m = mocker.patch("wmfdb.mycnf.configparser.ConfigParser", autospec=True, spec_set=True)
+        c = mycnf.Cnf(
+            ["clientlabsdb", "client"],
+            empty_lines_in_values=False,
+            inline_comment_prefixes="#.#",
+            allow_no_value=False,
+        )
         assert c._section_order == ["clientlabsdb", "client"]
         assert c._parser == m.return_value
         m.assert_called_once_with(
-            arg1="1", arg2="22", interpolation=None, allow_no_value=True, default_section=None
+            empty_lines_in_values=False,
+            inline_comment_prefixes="#.#",
+            interpolation=None,
+            allow_no_value=True,
+            default_section=None,
         )
         assert c._parser.optionxform == c._normalize_keys
 
@@ -44,9 +56,11 @@ class TestCnf:
         assert mycnf.Cnf._normalize_keys(key) == expected
 
     def test_load_cfgs(self, mocker: MockerFixture) -> None:
-        m_find_cfgs = mocker.patch("wmfdb.mycnf.Cnf._find_cfgs", return_value=["find1", "find2"])
-        m_load_cfg = mocker.patch("wmfdb.mycnf.Cnf._load_cfg")
         c = mycnf.Cnf()
+        m_find_cfgs = mocker.patch.object(
+            c, "_find_cfgs", return_value=["find1", "find2"], autospec=True, spec_set=True
+        )
+        m_load_cfg = mocker.patch.object(c, "_load_cfg", autospec=True, spec_set=True)
         paths = (Path("load1"), Path("load2"), Path("load3"))
         c.load_cfgs(paths)
         m_find_cfgs.assert_called_once_with(paths)
@@ -109,10 +123,10 @@ class TestCnf:
         assert c._find_cfgs(paths) == exp_paths
 
     def test__get(self, mocker: MockerFixture) -> None:
-        m_cp = mocker.patch("wmfdb.mycnf.configparser.ConfigParser")
+        m_cp = mocker.patch("wmfdb.mycnf.configparser.ConfigParser", autospec=True, spec_set=True)
         m_cp.return_value.has_option.side_effect = [False, True]
-        m_cleanup = mocker.patch("wmfdb.mycnf.Cnf._cleanup_value")
         c = mycnf.Cnf(section_order=["clientextra"] + list(mycnf.DEF_SECTION_LIST))
+        m_cleanup = mocker.patch.object(c, "_cleanup_value", autospec=True, spec_set=True)
         assert c._get("port") == ("client", m_cleanup.return_value, True)
         assert m_cp.return_value.has_option.call_args_list == [
             call("clientextra", "port"),
@@ -131,8 +145,8 @@ class TestCnf:
         assert c._cleanup_value(None) == ""
 
     def test__cleanup_value_comment(self, mocker: MockerFixture) -> None:
-        m = mocker.patch("wmfdb.mycnf.Cnf._cleanup_comment")
         c = mycnf.Cnf()
+        m = mocker.patch.object(c, "_cleanup_comment", autospec=True, spec_set=True)
         assert c._cleanup_value("foo#bar") == m.return_value
         m.assert_called_once_with("foo#bar")
 
@@ -192,57 +206,57 @@ class TestCnf:
         assert c._cleanup_comment(val) == expected
 
     def test_get_str(self, mocker: MockerFixture) -> None:
-        m = mocker.patch("wmfdb.mycnf.Cnf._get")
-        m.return_value = ["section", "foo", True]
         c = mycnf.Cnf()
+        m = self._mock_get(c, mocker)
+        m.return_value = ["section", "foo", True]
         assert c.get_str("key") == "foo"
         m.assert_called_once_with("key")
 
     def test_get_str_missing(self, mocker: MockerFixture) -> None:
-        m = mocker.patch("wmfdb.mycnf.Cnf._get")
-        m.return_value = ["", "", False]
         c = mycnf.Cnf()
+        m = self._mock_get(c, mocker)
+        m.return_value = ["", "", False]
         assert c.get_str("key") is None
 
     def test_get_int(self, mocker: MockerFixture) -> None:
-        m = mocker.patch("wmfdb.mycnf.Cnf._get")
-        m.return_value = ["section", "1001", True]
         c = mycnf.Cnf()
+        m = self._mock_get(c, mocker)
+        m.return_value = ["section", "1001", True]
         assert c.get_int("key") == 1001
         m.assert_called_once_with("key")
 
     def test_get_int_missing(self, mocker: MockerFixture) -> None:
-        m = mocker.patch("wmfdb.mycnf.Cnf._get")
-        m.return_value = ["", "", False]
         c = mycnf.Cnf()
+        m = self._mock_get(c, mocker)
+        m.return_value = ["", "", False]
         assert c.get_int("key") is None
 
     def test_get_int_err(self, mocker: MockerFixture) -> None:
-        m = mocker.patch("wmfdb.mycnf.Cnf._get")
-        m.return_value = ["test_section", "1001a", True]
         c = mycnf.Cnf()
+        m = self._mock_get(c, mocker)
+        m.return_value = ["test_section", "1001a", True]
         with pytest.raises(
             WmfdbValueError, match=r'\[test_section\]test_key has non-integer value: "1001a"'
         ):
             c.get_int("test_key")
 
     def test_get_float(self, mocker: MockerFixture) -> None:
-        m = mocker.patch("wmfdb.mycnf.Cnf._get")
-        m.return_value = ["section", "1001.03", True]
         c = mycnf.Cnf()
+        m = self._mock_get(c, mocker)
+        m.return_value = ["section", "1001.03", True]
         assert c.get_float("key") == 1001.03
         m.assert_called_once_with("key")
 
     def test_get_float_missing(self, mocker: MockerFixture) -> None:
-        m = mocker.patch("wmfdb.mycnf.Cnf._get")
-        m.return_value = ["", "", False]
         c = mycnf.Cnf()
+        m = self._mock_get(c, mocker)
+        m.return_value = ["", "", False]
         assert c.get_float("key") is None
 
     def test_get_float_err(self, mocker: MockerFixture) -> None:
-        m = mocker.patch("wmfdb.mycnf.Cnf._get")
-        m.return_value = ["test_section", "1001.03a", True]
         c = mycnf.Cnf()
+        m = self._mock_get(c, mocker)
+        m.return_value = ["test_section", "1001.03a", True]
         with pytest.raises(
             WmfdbValueError, match=r'\[test_section\]test_key has non-float value: "1001.03a"'
         ):
@@ -262,37 +276,37 @@ class TestCnf:
         ],
     )
     def test_get_bool(self, val: str, expected: bool, mocker: MockerFixture) -> None:
-        m = mocker.patch("wmfdb.mycnf.Cnf._get")
-        m.return_value = ["section", val, True]
         c = mycnf.Cnf()
+        m = self._mock_get(c, mocker)
+        m.return_value = ["section", val, True]
         assert c.get_bool("key") == expected
         m.assert_called_once_with("key")
 
     def test_get_bool_missing(self, mocker: MockerFixture) -> None:
-        m = mocker.patch("wmfdb.mycnf.Cnf._get")
-        m.return_value = ["", "", False]
         c = mycnf.Cnf()
+        m = self._mock_get(c, mocker)
+        m.return_value = ["", "", False]
         assert c.get_bool("key") is None
 
     def test_get_bool_err(self, mocker: MockerFixture) -> None:
-        m = mocker.patch("wmfdb.mycnf.Cnf._get")
-        m.return_value = ["test_section", "maybe", True]
         c = mycnf.Cnf()
+        m = self._mock_get(c, mocker)
+        m.return_value = ["test_section", "maybe", True]
         with pytest.raises(
             WmfdbValueError, match=r'\[test_section\]test_key has non-boolean value: "maybe"'
         ):
             c.get_bool("test_key")
 
     def test_get_no_value(self, mocker: MockerFixture) -> None:
-        m = mocker.patch("wmfdb.mycnf.Cnf._get")
-        m.return_value = ["test_section", None, True]
         c = mycnf.Cnf()
+        m = self._mock_get(c, mocker)
+        m.return_value = ["test_section", None, True]
         assert c.get_no_value("key")
 
     def test_get_no_value_missing(self, mocker: MockerFixture) -> None:
-        m = mocker.patch("wmfdb.mycnf.Cnf._get")
-        m.return_value = ["test_section", None, False]
         c = mycnf.Cnf()
+        m = self._mock_get(c, mocker)
+        m.return_value = ["test_section", None, False]
         assert not c.get_no_value("key")
 
     def test_pymysql_conn_args_one_cnf(self) -> None:
@@ -362,13 +376,19 @@ class TestCnfSelector:
     def mock_cnf(self, mocker: MockerFixture) -> None:
         # Keep a reference to the original class so we can use it in the factory.
         self._m_cnf_orig = mycnf.Cnf
-        self.m_cnf = mocker.patch("wmfdb.mycnf.Cnf", side_effect=self.mock_cnf_factory)
         self.mock_cnfs: List[Any] = []
 
-    def mock_cnf_factory(self, *args: Any, **kwargs: Any) -> Any:
-        m = create_autospec(self._m_cnf_orig, spec_set=True)(*args, **kwargs)
-        self.mock_cnfs.append(m)
-        return m
+        def _factory(*args: Any, **kwargs: Any) -> Any:
+            m = mocker.create_autospec(self._m_cnf_orig, spec_set=True)(*args, **kwargs)
+            self.mock_cnfs.append(m)
+            return m
+
+        self.m_cnf = mocker.patch(
+            "wmfdb.mycnf.Cnf",
+            side_effect=_factory,
+            autospec=True,
+            spec_set=True,
+        )
 
     def test_init_defaults(self) -> None:
         cs = mycnf.CnfSelector()
@@ -419,7 +439,7 @@ class TestCnfSelector:
     def test_pymsql_conn_args(self, mocker: MockerFixture) -> None:
         cs = mycnf.CnfSelector()
         cnf = self.mock_cnfs[0]
-        mocker.patch.object(cs, "get_cnf", mocker.MagicMock(return_value=cnf))
+        mocker.patch.object(cs, "get_cnf", return_value=cnf, autospec=True, spec_set=True)
         cs.pymysql_conn_args(host="db9999", arg1="arg1a")
         cs.get_cnf.assert_called_once_with("db9999")  # type: ignore
         cnf.pymysql_conn_args.assert_called_once_with(host="db9999", arg1="arg1a")

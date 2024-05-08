@@ -3,7 +3,7 @@ from typing import Any, Dict, Optional, Tuple
 import pymysql.err
 import pytest
 from pymysql.cursors import Cursor, DictCursor
-from pytest_mock import MockerFixture
+from pytest_mock import MockerFixture, MockType
 
 from wmfdb import db
 from wmfdb.exceptions import WmfdbDBError, WmfdbValueError
@@ -12,7 +12,14 @@ from wmfdb.exceptions import WmfdbDBError, WmfdbValueError
 class TestDB:
     @pytest.fixture(autouse=True)
     def mock_conn(self, mocker: MockerFixture) -> None:
-        self.m_conn = mocker.patch("wmfdb.db.Connection")
+        self.m_conn = mocker.patch("wmfdb.db.Connection", autospec=True, spec_set=True)
+
+    @pytest.fixture
+    def mock_cw(self, mocker: MockerFixture) -> MockType:
+        return mocker.patch("wmfdb.db.CursorWrapper", autospec=True, spec_set=True)
+
+    def _mock_addr(self, d: db.DB, mocker: MockerFixture) -> MockType:
+        return mocker.patch.object(d, "addr", autospec=True, spec_set=True)
 
     def test_init_defaults(self) -> None:
         d = db.DB()
@@ -54,47 +61,43 @@ class TestDB:
             db.DB()
         self.m_conn.assert_called_once_with()
 
-    def test_dict_cursor(self, mocker: MockerFixture) -> None:
-        m_cw = mocker.patch("wmfdb.db.CursorWrapper")
-        m_addr = mocker.patch("wmfdb.db.DB.addr")
+    def test_dict_cursor(self, mock_cw: MockType, mocker: MockerFixture) -> None:
         conn_obj = self.m_conn.return_value
         d = db.DB()
+        m_addr = self._mock_addr(d, mocker)
         c = d.dict_cursor()
         conn_obj.cursor.assert_called_once_with(cursor=DictCursor)
-        m_cw.assert_called_once_with(
+        mock_cw.assert_called_once_with(
             m_addr.return_value, conn_obj.cursor.return_value, timeout=None
         )
-        assert c == m_cw.return_value
+        assert c == mock_cw.return_value
 
-    def test_dict_cursor_tout(self, mocker: MockerFixture) -> None:
-        m_cw = mocker.patch("wmfdb.db.CursorWrapper")
-        m_addr = mocker.patch("wmfdb.db.DB.addr")
+    def test_dict_cursor_tout(self, mock_cw: MockType, mocker: MockerFixture) -> None:
         conn_obj = self.m_conn.return_value
         d = db.DB()
+        m_addr = self._mock_addr(d, mocker)
         d.dict_cursor(timeout=99.1)
-        m_cw.assert_called_once_with(
+        mock_cw.assert_called_once_with(
             m_addr.return_value, conn_obj.cursor.return_value, timeout=99.1
         )
 
-    def test_cursor(self, mocker: MockerFixture) -> None:
-        m_cw = mocker.patch("wmfdb.db.CursorWrapper")
-        m_addr = mocker.patch("wmfdb.db.DB.addr")
+    def test_cursor(self, mock_cw: MockType, mocker: MockerFixture) -> None:
         conn_obj = self.m_conn.return_value
         d = db.DB()
+        m_addr = self._mock_addr(d, mocker)
         c = d.cursor()
         conn_obj.cursor.assert_called_once_with(cursor=Cursor)
-        m_cw.assert_called_once_with(
+        mock_cw.assert_called_once_with(
             m_addr.return_value, conn_obj.cursor.return_value, timeout=None
         )
-        assert c == m_cw.return_value
+        assert c == mock_cw.return_value
 
-    def test_cursor_tout(self, mocker: MockerFixture) -> None:
-        m_cw = mocker.patch("wmfdb.db.CursorWrapper")
-        m_addr = mocker.patch("wmfdb.db.DB.addr")
+    def test_cursor_tout(self, mock_cw: MockType, mocker: MockerFixture) -> None:
         conn_obj = self.m_conn.return_value
         d = db.DB()
+        m_addr = self._mock_addr(d, mocker)
         d.cursor(timeout=99.1)
-        m_cw.assert_called_once_with(
+        mock_cw.assert_called_once_with(
             m_addr.return_value, conn_obj.cursor.return_value, timeout=99.1
         )
 
@@ -169,7 +172,7 @@ class TestDB:
         ],
     )
     def test_addr(self, args: Dict[str, Any], expected: str, mocker: MockerFixture) -> None:
-        m = mocker.patch("wmfdb.db.DB.host")
+        m = mocker.patch("wmfdb.db.DB.host", autospec=True, spec_set=True)
         m.return_value = "host1"
         d = db.DB(**args)
         assert d.addr() == expected
@@ -185,9 +188,9 @@ class TestDB:
         ],
     )
     def test_desc(self, args: Dict[str, Any], expected: str, mocker: MockerFixture) -> None:
-        m = mocker.patch("wmfdb.db.DB.addr")
-        m.return_value = "addr1"
         d = db.DB(**args)
+        m_addr = self._mock_addr(d, mocker)
+        m_addr.return_value = "addr1"
         assert d.desc() == expected
 
 
@@ -196,9 +199,11 @@ class TestCursorWrapper:
     def mock_cur(self, mocker: MockerFixture) -> None:
         self.m_cur = mocker.create_autospec(CursorForTest, spec_set=True)
 
-    @pytest.fixture
-    def mock_add_timeout(self, mocker: MockerFixture) -> Any:
-        return mocker.patch("wmfdb.db.CursorWrapper._add_timeout")
+    def _mock_add_timeout(self, c: db.CursorWrapper[Any], mocker: MockerFixture) -> Any:
+        return mocker.patch.object(c, "_add_timeout", autospec=True, spec_set=True)
+
+    def _mock_mogrify(self, c: db.CursorWrapper[Any], mocker: MockerFixture) -> Any:
+        return mocker.patch.object(c, "mogrify", autospec=True, spec_set=True)
 
     def test_init(self) -> None:
         c = db.CursorWrapper("host1", self.m_cur)
@@ -212,27 +217,29 @@ class TestCursorWrapper:
         assert c._cur == self.m_cur
         assert c._def_tout == 99.1
 
-    def test_execute(self, mock_add_timeout: Any, mocker: MockerFixture) -> None:
-        m_mog = mocker.patch("wmfdb.db.CursorWrapper.mogrify")
+    def test_execute(self, mocker: MockerFixture) -> None:
         c = db.CursorWrapper("host1", self.m_cur)
+        m_mog = self._mock_mogrify(c, mocker)
+        m_add_timeout = self._mock_add_timeout(c, mocker)
         ret = c.execute("query1")
         assert ret == self.m_cur.execute.return_value
         m_mog.assert_called_once_with("query1", None, timeout=None)
-        mock_add_timeout.assert_called_once_with("query1", None)
+        m_add_timeout.assert_called_once_with("query1", None)
         self.m_cur.execute.assert_called_once_with(
-            mock_add_timeout.return_value,
+            m_add_timeout.return_value,
             args=None,
         )
 
-    def test_execute_full(self, mock_add_timeout: Any, mocker: MockerFixture) -> None:
-        m_mog = mocker.patch("wmfdb.db.CursorWrapper.mogrify")
+    def test_execute_full(self, mocker: MockerFixture) -> None:
         c = db.CursorWrapper("host1", self.m_cur)
+        m_mog = mocker.patch.object(c, "mogrify", autospec=True, spec_set=True)
+        m_add_timeout = mocker.patch.object(c, "_add_timeout", autospec=True, spec_set=True)
         ret = c.execute("query1", ("arg1", "arg2"), timeout=99.1)
         assert ret == self.m_cur.execute.return_value
         m_mog.assert_called_once_with("query1", ("arg1", "arg2"), timeout=99.1)
-        mock_add_timeout.assert_called_once_with("query1", 99.1)
+        m_add_timeout.assert_called_once_with("query1", 99.1)
         self.m_cur.execute.assert_called_once_with(
-            mock_add_timeout.return_value,
+            m_add_timeout.return_value,
             args=("arg1", "arg2"),
         )
 
@@ -243,32 +250,33 @@ class TestCursorWrapper:
             (pymysql.err.OperationalError,),
         ],
     )
-    def test_execute_err(
-        self, excp: Exception, mock_add_timeout: Any, mocker: MockerFixture
-    ) -> None:
-        mocker.patch("wmfdb.db.CursorWrapper.mogrify")
+    def test_execute_err(self, excp: Exception, mocker: MockerFixture) -> None:
         self.m_cur.execute.side_effect = excp
         c = db.CursorWrapper("host1", self.m_cur)
+        mocker.patch.object(c, "mogrify", autospec=True, spec_set=True)
+        mocker.patch.object(c, "_add_timeout", autospec=True, spec_set=True)
         with pytest.raises(WmfdbDBError):
             c.execute("query1")
 
-    def test_mogrify(self, mock_add_timeout: Any) -> None:
+    def test_mogrify(self, mocker: MockerFixture) -> None:
         c = db.CursorWrapper("host1", self.m_cur)
+        m_add_timeout = mocker.patch.object(c, "_add_timeout", autospec=True, spec_set=True)
         ret = c.mogrify("query1")
         assert ret == self.m_cur.mogrify.return_value
-        mock_add_timeout.assert_called_once_with("query1", None)
+        m_add_timeout.assert_called_once_with("query1", None)
         self.m_cur.mogrify.assert_called_once_with(
-            mock_add_timeout.return_value,
+            m_add_timeout.return_value,
             args=None,
         )
 
-    def test_mogrify_full(self, mock_add_timeout: Any) -> None:
+    def test_mogrify_full(self, mocker: MockerFixture) -> None:
         c = db.CursorWrapper("host1", self.m_cur)
+        m_add_timeout = mocker.patch.object(c, "_add_timeout", autospec=True, spec_set=True)
         ret = c.mogrify("query1", ("arg1", "arg2"), timeout=99.1)
         assert ret == self.m_cur.mogrify.return_value
-        mock_add_timeout.assert_called_once_with("query1", 99.1)
+        m_add_timeout.assert_called_once_with("query1", 99.1)
         self.m_cur.mogrify.assert_called_once_with(
-            mock_add_timeout.return_value,
+            m_add_timeout.return_value,
             args=("arg1", "arg2"),
         )
 
