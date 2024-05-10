@@ -28,7 +28,7 @@ def run() -> None:
         description="A wrapper around the mysql cmdline client. It resolves the fqdn,\n"
         "converts section port aliases (e.g. :s3), and configures ssl\n"
         "appropriately.",
-        epilog="Example usage:\n  db-mysql --log=debug db1215:s3 -e 'ghow global status'",
+        epilog="Example usage:\n  db-mysql --log=debug db1215:s3 -e 'show global status'",
     )
     # Note: This overrides the mysql client's --version flag.
     parser.add_argument("--version", action="version", version=f"%(prog)s {wmfdb.__version__}")
