@@ -5,7 +5,7 @@ Maintainer: Stevie Beth Mhaol <sbmhaol@wikimedia.org>
 Build-Depends: debhelper (>= 10), dh-python, python3-all-dev, python3-setuptools
 Standards-Version: 4.1.2
 Homepage: https://gitlab.wikimedia.org/repos/sre/wmfdb
-X-Python3-Version: >= 3.7
+X-Python3-Version: >= 3.9
 
 Package: python3-wmfdb
 Architecture: any
