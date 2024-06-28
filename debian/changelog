@@ -1,3 +1,9 @@
+wmfdb (0.1.5) bookworm-wikimedia; urgency=medium
+
+  * Set the correct mysql prefs for an-redacteddb hosts
+
+ -- Ben Tullis <btullis@wikimedia.org>  Fri, 28 Jun 2024 09:53:13 +0100
+
 wmfdb (0.1.4~wmf1) bullseye-wikimedia; urgency=medium
 
   * Update ssl ca-certificate
