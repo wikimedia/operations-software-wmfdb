@@ -11,12 +11,13 @@ import wmfdb.mysql_cli as mysql_cli
         ("db2099", 3306, False, []),
         ("db2099", 10111, True, ["arg1", "--arg2"]),
         ("clouddb1099.eqiad.wmnet", 3306, False, ["arg1", "--arg2"]),
+        ("an-redacteddb1099.eqiad.wmnet", 3306, False, ["arg1", "--arg2"]),
     ],
 )
 def test_build_args(host: str, port: int, skip_ssl: bool, rest: List[str]) -> None:
     args = mysql_cli.build_args(host, port, skip_ssl, rest)
     assert args.pop(0) == mysql_cli.CMD
-    if host.startswith("clouddb"):
+    if host.startswith(("clouddb", "an-redacteddb")):
         assert args.pop(0) == "--defaults-group-suffix=labsdb"
     assert args.pop(0) == f"-h{host}"
     if port != 3306:

@@ -57,7 +57,7 @@ def build_args(host: str, port: int, skip_ssl: bool, rest: List[str]) -> List[st
         List[str]: mysql cli arguments.
     """
     args = [CMD]
-    if host.startswith("clouddb"):
+    if host.startswith(("clouddb", "an-redacteddb")):
         # This has to appear before any other options.
         args.append("--defaults-group-suffix=labsdb")
     args.append(f"-h{host}")

@@ -401,7 +401,7 @@ class TestCnfSelector:
             call(("clientlabsdb", "client")),
         ]
         assert cs._def_cnf == self.mock_cnfs[0]
-        assert cs._cnfs[0].pat == re.compile("clouddb.*")
+        assert cs._cnfs[0].pat == re.compile("(clouddb.*|an-redacteddb.*)")
         assert cs._cnfs[0].cnf == self.mock_cnfs[1]
 
     def test_init_custom(self) -> None:
@@ -439,6 +439,10 @@ class TestCnfSelector:
     def test_get_cnf_clouddb(self) -> None:
         cs = mycnf.CnfSelector()
         assert cs.get_cnf("clouddb9999") == cs._cnfs[0].cnf
+
+    def test_get_cnf_an_redacteddb(self) -> None:
+        cs = mycnf.CnfSelector()
+        assert cs.get_cnf("an-redacteddb9999") == cs._cnfs[0].cnf
 
     def test_pymsql_conn_args(self, mocker: MockerFixture) -> None:
         cs = mycnf.CnfSelector()

@@ -381,7 +381,7 @@ class CnfSelector:
         """
         if section_order_map is None:
             section_order_map = [
-                ("clouddb.*", ("clientlabsdb",) + DEF_SECTION_LIST),
+                ("(clouddb.*|an-redacteddb.*)", ("clientlabsdb",) + DEF_SECTION_LIST),
             ]
         self._def_cnf = Cnf(def_section_order, **kwargs)
         self._cnfs: List[_PatternCnf] = []
