@@ -1,3 +1,9 @@
+wmfdb (0.1.6) bookworm-wikimedia; urgency=medium
+
+  * Allow using db-test host in db-mysql
+
+ -- Federico Ceratto <fceratto@wikimedia.org>  Mon, 02 Feb 2026 15:09:30 +0100
+
 wmfdb (0.1.5) bookworm-wikimedia; urgency=medium
 
   * Set the correct mysql prefs for an-redacteddb hosts
