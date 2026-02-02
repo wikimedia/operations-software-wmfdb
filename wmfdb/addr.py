@@ -71,8 +71,10 @@ def _dc_map(host: str) -> str:
         5: "eqsin",
         6: "drmrs",
     }
-    dc_rx = re.compile(r"^[a-zA-Z]+(?P<dc_id>\d)\d{3}$")
-    m = dc_rx.match(host)
+    # The first char has to be a letter
+    # The other chars before the numbers can be letters or dash
+    dc_rx = re.compile(r"[a-zA-Z]+[a-zA-Z-]+(?P<dc_id>\d)\d{3}")
+    m = dc_rx.fullmatch(host)
     if not m:
         return socket.getfqdn(host)
     dc_id = int(m.group("dc_id"))
