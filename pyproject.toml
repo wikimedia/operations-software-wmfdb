@@ -1,3 +1,147 @@
+# Please keep tool blocks sorted alphabetically
+
 [tool.black]
-target-version = ['py39']
-line-length = 100
+line-length = 120
+
+[tool.coverage.report]
+exclude_lines = [
+    'raise NotImplementedError'
+]
+
+[tool.coverage.run]
+omit = [
+    "auto_schema/tests/*"
+]
+
+[tool.mypy]
+follow_imports = "skip"
+ignore_missing_imports = true
+pretty = true
+show_error_context = true
+strict_equality = true
+strict = false
+warn_unused_configs = true
+
+disallow_untyped_calls = true
+disallow_incomplete_defs = true
+check_untyped_defs = true        
+
+[[tool.mypy.overrides]]
+module = "wmfdb.tests.*"
+ignore_errors = true
+
+[tool.pytest.ini_options]
+log_cli = true
+log_cli_level = "DEBUG"
+log_level = "DEBUG"
+addopts = "--color=yes"
+
+
+[tool.isort]
+line_length = 120
+profile = "black"
+
+
+[tool.pylsp-mypy]
+enabled = true
+live_mode = true
+
+
+[tool.ruff]
+# Minimum python version to support
+target-version = "py311"
+
+# Exclude commonly ignored directories
+exclude = [
+    ".direnv",
+    ".eggs",
+    ".git",
+    ".git-rewrite",
+    ".mypy_cache",
+    ".nox",
+    ".pants.d",
+    ".pyenv",
+    ".pytest_cache",
+    ".pytype",
+    ".ruff_cache",
+    ".tox",
+    ".venv",
+    ".vscode",
+    "__pypackages__",
+    "_build",
+    "build",
+    "dist",
+    "site-packages",
+    "venv",
+]
+
+# Same as Black
+line-length = 120
+
+[tool.ruff.lint]
+select = [
+    "A",  # Flake8 builtins
+    "ARG",  # Flake8 unused arguments                
+    "BLE",  # Flake8 blind except                    
+    "C4",  # Flake8 comprehensions
+    "DTZ",  # Flake8 datetimez
+    "E",  # Pycodestyle errors
+    "ERA",  # Eradicate
+    "EXE",  # Flake8 executable
+    "F",  # Pyflakes
+    "G",  # Flake8 logging format
+    "I",  # Isort
+    "INP",  # Flake8 no pep420                       
+    "ISC",  # Flake8 implicit string concat          
+    "PIE",  # Flake8 pie
+    "RUF",  # Ruff specific rules                    
+    "SIM",  # Flake8 simplify                        
+    "SLF",  # Flake8 self - private member access    
+    "SLOT",  # Flake8 slots
+    "T10",  # Flake8 debugger
+    "T20",  # Flake8 print
+    "TID",  # Flake8 tidy imports
+    "TRY",  # Tryceratops                            
+    "W",  # Pycodestyle warnings
+    "YTT",  # Flake8 2020
+
+    # "ANN",  # Flake8 annotations                     
+    # "B",  # Flake8 bugbear                           
+    # "COM",  # Flake8 commas
+    # "FBT",  # Flake8 boolean trap                    
+    # "PL",  # Pylint
+    # "PT",  # Flake8 pytest style                     
+    # "PTH",  # Flake8 use pathlib                     
+    # "S",  # Flake8 bandit                            
+]
+
+ignore = [
+    "A001",    # Shadowing variables
+    "ERA001",  # Commented-out code
+    "EXE001",
+    "G001",    # Logging statement uses `str.format`
+    "G003",    # Logging uses +
+    "G004",    # Logging statement uses f-string
+    "RUF005",
+    "S101",    # Use of `assert` detected
+    "T201",    # Allow print() calls
+    "TID252",  # Prefer absolute imports over relative imports from parent modules
+    "TRY003",
+]
+
+[tool.ruff.lint.per-file-ignores]
+"wmfdb/tests/*" = [
+    "ARG",     # Unused args
+    "E501",    # Long lines
+    "E722",    # Bare except
+    "PL",
+    "S101",    # Allow asserts
+    "SIM108",  # Flake8 simplify
+    "SLF001",  # Private member accessed
+]
+
+[tool.ruff.lint.flake8-bandit]
+check-typed-exception = true
+
+[tool.ruff.format]
+docstring-code-format = true

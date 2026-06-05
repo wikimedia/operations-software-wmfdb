@@ -1,3 +1,4 @@
+import os
 from pathlib import Path
 
 import pytest
@@ -28,32 +29,22 @@ class TestSectionMap:
         self._check_cfg_loaded(sm)
 
     def test_init_load(self, mocker: MockerFixture) -> None:
-        m_get_cfg = mocker.patch(
-            "wmfdb.section.SectionMap._get_cfg_file", autospec=True, spec_set=True
-        )
-        m_parse_cfg = mocker.patch(
-            "wmfdb.section.SectionMap._parse_cfg", autospec=True, spec_set=True
-        )
+        m_get_cfg = mocker.patch("wmfdb.section.SectionMap._get_cfg_file", autospec=True, spec_set=True)
+        m_parse_cfg = mocker.patch("wmfdb.section.SectionMap._parse_cfg", autospec=True, spec_set=True)
         sm = section.SectionMap()
         m_get_cfg.assert_called_once()
         m_parse_cfg.assert_called_once_with(sm, m_get_cfg.return_value)
 
     def test_init_dont_load(self, mocker: MockerFixture) -> None:
-        m_get_cfg = mocker.patch(
-            "wmfdb.section.SectionMap._get_cfg_file", autospec=True, spec_set=True
-        )
-        m_parse_cfg = mocker.patch(
-            "wmfdb.section.SectionMap._parse_cfg", autospec=True, spec_set=True
-        )
+        m_get_cfg = mocker.patch("wmfdb.section.SectionMap._get_cfg_file", autospec=True, spec_set=True)
+        m_parse_cfg = mocker.patch("wmfdb.section.SectionMap._parse_cfg", autospec=True, spec_set=True)
         sm = section.SectionMap(_load_cfg=False)
         assert len(sm._section) == 0
         assert len(sm._port) == 0
         m_get_cfg.assert_not_called()
         m_parse_cfg.assert_not_called()
 
-    def test_get_cfg_file_default_path(
-        self, monkeypatch: pytest.MonkeyPatch, mocker: MockerFixture
-    ) -> None:
+    def test_get_cfg_file_default_path(self, monkeypatch: pytest.MonkeyPatch, mocker: MockerFixture) -> None:
         # Unset the env var so this test is hermetic.
         monkeypatch.delenv(section.TEST_DATA_ENV, raising=False)
         sm = section.SectionMap(_load_cfg=False)
@@ -86,6 +77,7 @@ class TestSectionMap:
         with pytest.raises(WmfdbIOError, match="No such file"):
             sm._get_cfg_file(tmp_path / "section_ports.csv")
 
+    @pytest.mark.skipif(os.getuid() == 0, reason="Cannot test file perms as root user in CI")
     def test_get_cfg_file_eperm(
         self,
         monkeypatch: pytest.MonkeyPatch,

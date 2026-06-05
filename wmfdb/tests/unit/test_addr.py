@@ -1,5 +1,6 @@
 import ipaddress
 import socket
+from unittest.mock import patch
 
 import pytest
 from pytest_mock import MockerFixture
@@ -51,15 +52,20 @@ def test__resolve_ip_error(mocker: MockerFixture) -> None:
         addr._resolve_ip(ipaddress.ip_address("192.168.1.1"))
 
 
-@pytest.mark.parametrize(
-    ("host", "expected"),
-    [
-        ("host1102", "host1102.eqiad.wmnet"),
-        ("h6003", "h6003.drmrs.wmnet"),
-    ],
-)
-def test_dc_map(host: str, expected: str) -> None:
-    assert addr._dc_map(host) == expected
+def test_dc_map_eq() -> None:
+    assert addr._dc_map("host1102") == "host1102.eqiad.wmnet"
+
+
+@patch("socket.getfqdn")
+def test_dc_map_drmrs(m_getfqdn) -> None:
+    # Invalid hostname: fallback to getfqdn
+    m_getfqdn.return_value = "foo"
+    assert addr._dc_map("h6003") == "foo"
+
+
+def test_dc_map_unknown_id() -> None:
+    with pytest.raises(WmfdbValueError, match="Unknown datacenter ID '9'"):
+        addr._dc_map("db9001")
 
 
 def test_dc_map_no_dcid(mocker: MockerFixture) -> None:

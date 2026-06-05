@@ -8,10 +8,11 @@ stages:
 test:
   stage: test
   image:
-    name: docker-registry.wikimedia.org/releng/tox-buster:latest
-    entrypoint: [""]
+    name: docker-registry.wikimedia.org/bookworm
   script:
+    - DEBIAN_FRONTEND=noninteractive apt-get update -q -y && apt-get install -q -y tox
     - tox
+
 
 # # Deb pkg build # #
 
