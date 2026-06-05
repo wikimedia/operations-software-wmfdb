@@ -178,10 +178,8 @@ class TestCnf:
     def test__cleaup_value_quotes(self, val: str, expected: str) -> None:
         assert len(val) > 1, "val is too short"
         assert len(expected) > 1, "expected is too short"
-        assert val[0] == "+" and val[-1] == "+", "val is wrapped incorrectly"  # noqa: PT018
-        assert (  # noqa: PT018
-            expected[0] == "*" and expected[-1] == "*"
-        ), "expected is wrapped incorrectly"
+        assert val[0] == "+" and val[-1] == "+", "val is wrapped incorrectly"
+        assert expected[0] == "*" and expected[-1] == "*", "expected is wrapped incorrectly"
         val = val.strip("+")
         expected = expected.strip("*")
         c = mycnf.Cnf()
@@ -239,9 +237,7 @@ class TestCnf:
         c = mycnf.Cnf()
         m = self._mock_get(c, mocker)
         m.return_value = ["test_section", "1001a", True]
-        with pytest.raises(
-            WmfdbValueError, match=r'\[test_section\]test_key has non-integer value: "1001a"'
-        ):
+        with pytest.raises(WmfdbValueError, match=r'\[test_section\]test_key has non-integer value: "1001a"'):
             c.get_int("test_key")
 
     def test_get_float(self, mocker: MockerFixture) -> None:
@@ -261,9 +257,7 @@ class TestCnf:
         c = mycnf.Cnf()
         m = self._mock_get(c, mocker)
         m.return_value = ["test_section", "1001.03a", True]
-        with pytest.raises(
-            WmfdbValueError, match=r'\[test_section\]test_key has non-float value: "1001.03a"'
-        ):
+        with pytest.raises(WmfdbValueError, match=r'\[test_section\]test_key has non-float value: "1001.03a"'):
             c.get_float("test_key")
 
     @pytest.mark.parametrize(
@@ -296,9 +290,7 @@ class TestCnf:
         c = mycnf.Cnf()
         m = self._mock_get(c, mocker)
         m.return_value = ["test_section", "maybe", True]
-        with pytest.raises(
-            WmfdbValueError, match=r'\[test_section\]test_key has non-boolean value: "maybe"'
-        ):
+        with pytest.raises(WmfdbValueError, match=r'\[test_section\]test_key has non-boolean value: "maybe"'):
             c.get_bool("test_key")
 
     def test_get_no_value(self, mocker: MockerFixture) -> None:
