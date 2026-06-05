@@ -49,3 +49,10 @@ build_ci_deb_bookworm:
   variables:
     SUITE: "bookworm"
     DEB_VERSION_NUMBER: "12"
+    
+build_ci_deb_trixie:
+  extends: .backport
+  image: docker-registry.wikimedia.org/wmf-debci-trixie
+  variables:
+    SUITE: "trixie"
+    DEB_VERSION_NUMBER: "13"
