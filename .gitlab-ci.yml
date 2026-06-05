@@ -16,36 +16,51 @@ test:
 
 # # Deb pkg build # #
 
+variables:
+  WMF_CI_RELEASE_DEB: "0"
+  # Use backports when building debs
+  USEBACKPORTS: "1"
+
 include:
   - project: 'repos/sre/wmf-debci'
     ref: main
     file:
       - 'wmfdeb.yml'
 
+
+# This builds Trixie (13). The changelog file must target `trixie-wikimedia`
+build_ci_deb:
+  tags:
+    - trusted
+
+# Backports (see below)
 .backport:
   extends: build_ci_deb
   stage: build
   tags:
     - trusted
   before_script:
-    - dch -v "$(dpkg-parsechangelog -S version)~deb${DEB_VERSION_NUMBER}u1"
-      -D "${SUITE}-wikimedia"
-      "Backport to ${SUITE}-wikimedia"
+    - echo "[dch] Setting version to $(dpkg-parsechangelog -S version)+deb${DEB_VERSION_NUMBER}u1"
+    - echo "[dch] Setting distribution to ${DISTRO_NAME}"
+    - dch -v "$(dpkg-parsechangelog -S version)+deb${DEB_VERSION_NUMBER}u1"
+      -D "${DISTRO_NAME}"
+      "Backport to ${DISTRO_NAME}"
 
-build_ci_deb:
-  tags:
-    - trusted
-
+# Bullseye (11)
 build_ci_deb_bullseye:
  extends: .backport
  image: docker-registry.wikimedia.org/wmf-debci-bullseye
  variables:
    SUITE: "bullseye"
+   DISTRO_NAME: "bullseye-wikimedia"
    DEB_VERSION_NUMBER: "11"
 
+# Bookworm (12)
 build_ci_deb_bookworm:
-  extends: .backport
-  image: docker-registry.wikimedia.org/wmf-debci-bookworm
-  variables:
-    SUITE: "bookworm"
-    DEB_VERSION_NUMBER: "12"
+ extends: .backport
+ image: docker-registry.wikimedia.org/wmf-debci-bookworm
+ variables:
+   SUITE: "bookworm"
+   DISTRO_NAME: "bookworm-wikimedia"
+   DEB_VERSION_NUMBER: "12"
+
