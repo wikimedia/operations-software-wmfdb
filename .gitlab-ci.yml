@@ -1,5 +1,10 @@
 stages:
   - test
+  - prepare
+  - build
+  - upload
+  - release
+
 test:
   stage: test
   image:
@@ -7,3 +12,39 @@ test:
     entrypoint: [""]
   script:
     - tox
+
+# # Deb pkg build # #
+
+include:
+  - project: 'repos/sre/wmf-debci'
+    ref: main
+    file:
+      - 'wmfdeb.yml'
+
+.backport:
+  extends: build_ci_deb
+  stage: build
+  tags:
+    - trusted
+  before_script:
+    - dch -v "$(dpkg-parsechangelog -S version)~deb${DEB_VERSION_NUMBER}u1"
+      -D "${SUITE}-wikimedia"
+      "Backport to ${SUITE}-wikimedia"
+
+build_ci_deb:
+  tags:
+    - trusted
+
+build_ci_deb_bullseye:
+ extends: .backport
+ image: docker-registry.wikimedia.org/wmf-debci-bullseye
+ variables:
+   SUITE: "bullseye"
+   DEB_VERSION_NUMBER: "11"
+
+build_ci_deb_bookworm:
+  extends: .backport
+  image: docker-registry.wikimedia.org/wmf-debci-bookworm
+  variables:
+    SUITE: "bookworm"
+    DEB_VERSION_NUMBER: "12"
