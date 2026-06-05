@@ -1,3 +1,4 @@
+import os
 import re
 from pathlib import Path
 from typing import Any, List
@@ -97,6 +98,7 @@ class TestCnf:
         with pytest.raises(WmfdbIOError, match="No such file"):
             c._load_cfg(cnf_path)
 
+    @pytest.mark.skipif(os.getuid() == 0, reason="Cannot test file perms as root user in CI")
     def test__load_cfg_read_error(self, tmp_path: Path) -> None:
         cnf_path = tmp_path / "my.cnf"
         cnf_path.touch(mode=0o000)
@@ -104,6 +106,7 @@ class TestCnf:
         with pytest.raises(WmfdbIOError, match="Permission denied"):
             c._load_cfg(cnf_path)
 
+    @pytest.mark.skipif(os.getuid() == 0, reason="Cannot test file perms as root user in CI")
     def test__find_cfgs(self, tmp_path: Path) -> None:
         paths = [
             tmp_path / "0_readable.cnf",
